@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Session">
+
+    <!-- 권한별 메뉴조회 -->
+    <select id="selectPrivMenu" parameterClass="map" resultClass="tz.common.session.domain.PrivMenu" >
+    <![CDATA[ /* Session.selectPrivMenu */ ]]>
+	    SELECT A.DUTY_SYS_CD
+             , A.MENU_ID
+             , A.MENU_CD
+             , CASE WHEN B.MLANG_ABBRNM IS NULL THEN
+                   A.MENU_NM
+               ELSE
+                   B.MLANG_ABBRNM
+               END AS CAPTION
+             , A.MENU_EXPL AS NAVIGATION
+             , A.MENU_LVL AS DEPTH
+             , A.MENU_URL AS FORM_ID
+             , A.MENU_VAR
+             , A.HGR_MENU_ID AS PARENT_ID
+             ,(SELECT MENU_CD FROM SY_MENU WHERE A.HGR_MENU_ID = MENU_ID) AS PRNT_MENU_CD
+             , A.ARRAY_ORD
+             , A.QRY_YN
+             , A.POPUP_YN
+             , A.MENU_HPWRD_FILE_NM
+             , '1' AS STATE
+             , '' AS PREFIX
+             , '1' AS TEST
+          FROM SY_MENU  A
+        LEFT OUTER JOIN SY_MLANG  B
+          ON A.SYS_CD = B.SYS_CD
+         AND A.MENU_NM = B.MLANG_ID
+         AND A.SYS_CD = #sysCd#
+         AND B.USE_YN = 'Y'
+         AND B.LOCL_CD = NVL(#loclCd#, 'ko_KR')
+         WHERE A.SYS_CD = #sysCd#
+           AND A.MENU_ID IN (SELECT DISTINCT MENU_ID
+                               FROM SY_PRIV_CTG_MENU
+                              WHERE SYS_CD = #sysCd#
+                                AND PRIV_CD IN <iterate property="privCd" open="(" close=")" conjunction=",">#privCd[]#</iterate>)
+           AND A.USE_YN = 'Y'
+           AND A.QRY_YN = 'Y'
+       CONNECT BY PRIOR A.MENU_ID = A.HGR_MENU_ID
+         START WITH A.HGR_MENU_ID IS NULL
+         ORDER SIBLINGS BY A.ARRAY_ORD
+    </select>
+
+    <!-- 사용자별 sheepshare 권한을 가진 시스템 코드 조회  -->
+    <resultMap class="java.util.Map" id="sysCdMap">
+	   <result property="sysCd" column="SYS_CD"/>
+	   <result property="sysNm" column="SYS_NM"/>
+	</resultMap>
+    <select id="retrieveAdminSysCd" parameterClass="map" resultMap="sysCdMap" >
+    <![CDATA[ /* Session.retrieveAdminSysCd */ ]]>
+
+	    SELECT
+             	DISTINCT B.SYS_CD, C.SYS_NM || '(' || B.SYS_CD || ')' AS SYS_NM
+ 		  FROM
+             	SY_USER_CTG_PRIV A
+        LEFT JOIN SY_PRIV B ON ( A.PRIV_CD = B.PRIV_CD )
+        LEFT JOIN SY_SYS C  ON ( A.SYS_CD = C.SYS_CD)
+        WHERE A.PRIV_USER_ID = #userId#
+        <![CDATA[
+          AND A.PRIV_ST_YMD <= TO_CHAR(SYSDATE, 'YYYYMMDD')
+          AND A.PRIV_ED_YMD >= TO_CHAR(SYSDATE, 'YYYYMMDD')
+        ]]>
+          AND B.ADMIN_YN     = 'Y'
+          AND B.USE_YN       = 'Y'
+          AND C.USE_YN       = 'Y'
+
+    </select>
+
+	<!-- 조건에 의한 즐겨찾기 조회 -->	<select id="selectSyMenuBkmrkList" parameterClass="map" resultClass="tz.common.session.domain.SyMenuBkmrk">	<![CDATA[ /* Session.selectSyMenuBkmrkList */ ]]>	SELECT B.SYS_CD 	     , A.USER_ID 	     , A.MENU_ID 	     , A.ARRAY_ORD 	     , A.USE_YN	     , TO_CHAR(A.FST_REG_DT,'YYYYMMDDHH24MISS') AS FST_REG_DT 	     , A.FST_REG_USER_ID	     , TO_CHAR(A.FNL_EDIT_DT,'YYYYMMDDHH24MISS') AS FNL_EDIT_DT 	     , A.FNL_EDIT_USER_ID 	     , B.MENU_NM	  FROM SY_MENU_BKMRK A	  JOIN SY_MENU       B ON A.MENU_ID = B.MENU_ID	 WHERE B.SYS_CD = #sysCd#	   AND A.USER_ID = #userId#	 ORDER BY A.ARRAY_ORD	</select>	<!-- 즐겨찾기 추가-->	<insert id="insertSyMenuBkmrk" parameterClass="tz.common.session.domain.SyMenuBkmrk">	<![CDATA[ /* Session.insertSyMenuBkmrk */ ]]>	INSERT INTO SY_MENU_BKMRK	(     	   USER_ID 	     , MENU_ID 	     , ARRAY_ORD 	     , USE_YN 	     , FST_REG_DT 	     , FST_REG_USER_ID 	     , FNL_EDIT_DT 	     , FNL_EDIT_USER_ID	)	VALUES	(	      #userId#	    , #menuId#	    , #arrayOrd#	    , #useYn#	    , SYSDATE	    , #fstRegUserId#	    , SYSDATE	    , #fnlEditUserId#	)	</insert>	<!-- 즐겨찾기 수정 -->	<update id="updateSyMenuBkmrk" parameterClass="tz.common.session.domain.SyMenuBkmrk">	<![CDATA[ /* Session.updateSyMenuBkmrk */ ]]>     UPDATE SY_MENU_BKMRK        SET ARRAY_ORD   = #arrayOrd#          , USE_YN      = #useYn#          , FNL_EDIT_DT = SYSDATE          , FNL_EDIT_USER_ID = #fnlEditUserId#	  WHERE USER_ID = #userId#       AND MENU_ID  = #menuId#	</update>	<!-- 즐겨찾기 삭제 -->	<delete id="deleteSyMenuBkmrk" parameterClass="tz.common.session.domain.SyMenuBkmrk">	<![CDATA[ /* Session.deleteSyMenuBkmrk */ ]]>	DELETE FROM SY_MENU_BKMRK	 WHERE USER_ID = #userId#       AND MENU_ID = #menuId#	</delete>
+
+    <select id="retrievePrivTpList" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* Session.retrievePrivTpList */ ]]>
+		SELECT A.SYS_CD, A.PRIV_TP_CD, B.PRIV_CD
+		     , CASE A.PRIV_TP_CLS
+               WHEN 'A' THEN
+                   A.QRYLANG
+               ELSE
+                   TO_CLOB('( SELECT ORG_CD FROM SY_PRIV_CTG_SITE WHERE PRIV_TP_CD = ''' ||A.PRIV_TP_CD||''' AND PRIV_CD = '''||B.PRIV_CD||''' )'  )
+               END QRYLANG
+              , PRIV_MNG_CLS
+		FROM SY_PRIV_TP A
+		LEFT OUTER JOIN SY_PRIV_TP_CTG_PRIV B ON A.SYS_CD = B.SYS_CD AND A.PRIV_TP_CD = B.PRIV_TP_CD
+		WHERE A.SYS_CD = #sysCd#  AND (PRIV_CD IS NOT NULL OR A.DFLT_YN  = 'Y')
+    </select>
+   <select id="retrieveSyHolidayList" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* Session.retrieveSyHolidayList */ ]]>
+		  SELECT SCH.DE HDATE,
+		         (SELECT PK_COMM.GET_CM_LANG_NAME(SCH.GROUP_ID,
+		                                          'FM12',
+		                                          SCH.SUB_KEY,
+		                                          'ko_KR')
+		            FROM DUAL) AS HLDY_NM,         
+		         'red' COLOR,
+		         '' BKCOLOR
+		    FROM SY_CM_HLDY SCH
+		   WHERE SCH.GROUP_ID = #groupId#
+		   ORDER BY SCH.GROUP_ID,
+		            SCH.NATION_CODE,
+		            SCH.DE
+    </select>
+</sqlMap>

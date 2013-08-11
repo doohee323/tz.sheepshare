@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:jee="http://www.springframework.org/schema/jee"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:p="http://www.springframework.org/schema/p"
+   xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- BLOB, CLOB 사용을 위한 설정 -->
+	<bean id="lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
+
+    <!-- ============================================================= -->
+    <!--  iBatis : SqlMap setup for iBATIS Database Layer              -->
+    <!-- ============================================================= -->
+	<bean id="tzDao" class="tz.extend.query.CommonDaoImpl">
+		<property name="queryExecutor" ref="queryExecutor" />
+		<qualifier value="mainDB"/><!-- 별칭세팅 : 복수의 데이타 소스 지원을 위한 준비 -->
+	</bean>
+	
+	<bean id="queryExecutor" class="tz.basis.query.core.QueryExecutor">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sqlMapClient" ref="sqlMapClient" />
+	</bean>
+	
+	<bean id="sqlMapClient" class="tz.basis.query.loader.SqlMapClientFactoryBean"
+		p:dataSource-ref="dataSource" p:configLocation="classpath:/ibatis/SqlmapConfig.xml"
+		p:lobHandler-ref="lobHandler" 
+		lazy-init="true">
+		<property name="mappingLocations">
+		<list>
+			<value>classpath*:com/tz/**/sqlmap/*Sqlmap.xml</value>
+			<value>classpath*:tz/common/**/sqlmap/*Sqlmap.xml</value>
+		</list>
+		</property>
+	</bean>
+
+    <!-- iBatis for Sms start -->
+	<bean id="tzDao2" class="tz.extend.query.CommonDaoImpl">
+		<property name="queryExecutor" ref="queryExecutor2" />
+		<qualifier value="2ndDB"/>
+	</bean>
+	
+	<bean id="queryExecutor2" class="tz.basis.query.core.QueryExecutor">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sqlMapClient" ref="sqlMapClient2" />
+	</bean>
+	<bean id="sqlMapClient2" class="tz.basis.query.loader.SqlMapClientFactoryBean"
+		p:dataSource-ref="dataSource2" p:configLocation="classpath:/ibatis/SqlmapConfig.xml"
+		p:mappingLocations="classpath*:com/tz/sheepshare/**/sqlmap2/*Sqlmap.xml" p:lobHandler-ref="lobHandler"
+		lazy-init="true"
+	/>
+	<!-- iBatis for Sms end -->
+
+	<bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+		<property name="taskExecutor" ref="executor" />
+	</bean>
+
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" autowire-candidate="true">
+		<property name="corePoolSize" value="10" />
+		<property name="maxPoolSize" value="10" />
+		<property name="queueCapacity" value="100000" />
+	</bean>
+
+	<!-- default SqlMapClient begin -->
+    <bean id="defaultSqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+        <property name="sqlMapClient" ref="defaultSqlMapClient" />
+    </bean>
+
+	<bean id="defaultSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"
+		p:dataSource-ref="dataSource" p:configLocation="classpath:/ibatis/SqlmapConfig.xml"
+		p:lobHandler-ref="lobHandler"
+		lazy-init="true">
+		<property name="mappingLocations">
+		<list>
+			<value>classpath*:com/tz/**/sqlmap/*Sqlmap.xml</value>
+			<value>classpath*:tz/common/**/sqlmap/*Sqlmap.xml</value>
+		</list>
+		</property>
+	</bean>	
+	<!-- default SqlMapClient end -->
+
+</beans>

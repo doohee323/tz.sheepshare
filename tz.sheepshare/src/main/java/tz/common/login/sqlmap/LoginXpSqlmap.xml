@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="loginXP">
+
+	<!-- 로긴 시 spring security로 전달할 정보 추출 -->
+  <select id="retrieveLoginInfo" parameterClass="map" resultClass="tz.extend.iam.authentication.UserDefinition" >
+    <![CDATA[ /* loginXP.retrieveLoginInfo */ ]]>
+        SELECT A.USER_ID
+             , A.PWD AS PASSWORD
+             , A.USER_KNM AS USER_NM
+         FROM SY_USER A
+    WHERE A.USE_YN = 'Y'
+    AND A.USER_ID = #userId#
+  </select>
+
+  <select id="userLogin" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.userLogin */ ]]>
+        SELECT A.USER_ID
+             , A.ORG_CD
+             , A.USER_TP_CD
+             , A.USER_KNM AS USER_NM
+             , A.USER_ENM
+             , A.PWD AS PASSWD
+             , A.PWD_CHG_DT
+             , A.EMAIL
+             , A.TELNO AS PHONE
+             , A.MPHONE_NO AS M_PHONE
+             , A.FAXNO
+             , A.ZIPCD
+             , A.BAS_ADDR
+             , A.DTL_ADDR
+             , A.NAT_CD
+             , A.LOCL_CD
+             , A.USER_POSIT_CD
+             , A.USER_RPSWRK_CD
+             , A.USER_JOBSP_CD
+             , A.USE_YN
+             , A.EMP_NO
+             , A.DEPT_CODE
+             , B.CPR_CODE
+<!--              , B.ORG_CD BSNS_RELM_CODE -->
+<!--              , B.CT_DEPT_CODE -->
+<!--              , B.BUDGET_DEPT_CODE -->
+<!--              , B.PRFLOS_CNTER_CODE -->
+         FROM SY_USER A
+            , V_SY_DEPT B
+        WHERE A.DEPT_CODE = B.DEPT_CODE
+            
+<!-- 	<dynamic prepend="WHERE"> -->
+    <isNotEmpty prepend="AND" property="useYn">
+        A.USE_YN = #useYn#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userId">
+        A.USER_ID = #userId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="loginId">
+        A.USER_ID = #loginId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="empNo">
+        A.EMP_NO = #empNo#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="email">
+        A.EMAIL = #email#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCd">
+        A.USER_TP_CD = #userTpCd#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCds">
+        A.USER_TP_CD IN (#userTpCds#)
+    </isNotEmpty>
+<!--     </dynamic> -->
+  </select>
+
+  <!-- 직위/직책/직종 정보 조회 -->
+  <select id="userEtcInfo" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.userEtcInfo */ ]]>
+        SELECT
+               A.USER_POSIT_CD
+             , A.USER_RPSWRK_CD
+             , A.USER_JOBSP_CD
+             , A.USER_DUTY_CD
+         FROM SY_USER A
+	<dynamic prepend="WHERE">
+    <isNotEmpty prepend="AND" property="useYn">
+        A.USE_YN = #useYn#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userId">
+        A.USER_ID = #userId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="loginId">
+        A.USER_ID = #loginId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="empno">
+        A.EMPNO = #empno#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="email">
+        A.EMAIL = #email#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCd">
+        A.USER_TP_CD = #userTpCd#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCds">
+        A.USER_TP_CD IN (#userTpCds#)
+    </isNotEmpty>
+    </dynamic>
+  </select>
+
+  <!-- 직위/직책/직종 정보 조회 -->
+  <select id="userEtcInfoChg" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.userEtcInfoChg */ ]]>
+        SELECT
+               A.USER_POSIT_CD
+             , A.USER_RPSWRK_CD
+             , A.USER_JOBSP_CD
+             , A.USER_DUTY_CD
+         FROM SY_APPT A
+        WHERE ROWNUM = 1
+	<isNotEmpty prepend="AND" property="today">
+	    NVL(A.APPT_ED_YMD, '99999999') >= TO_CHAR(SYSDATE, 'YYYYMMDD')
+	</isNotEmpty>
+    <isNotEmpty prepend="AND" property="userId">
+        A.USER_ID = #userId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="orgCd">
+        A.ORG_CD = #orgCd#
+    </isNotEmpty>
+  </select>
+
+  <!-- 업체정보 조회 -->
+  <select id="retrieveBiz" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.retrieveBiz */ ]]>
+		SELECT B.*
+		FROM SY_USER A
+		WHERE A.USER_ID = #userId#
+  </select>
+
+  	<select id="chkUserLogin" parameterClass="map" resultClass="string" >
+    <![CDATA[ /* loginXP.chkUserLogin */ ]]>
+        SELECT A.USER_ID
+          FROM SY_USER A
+      <dynamic prepend="WHERE">
+    <isNotEmpty prepend="AND" property="useYn">
+        A.USE_YN = #useYn#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userId">
+        A.USER_ID = #userId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="loginId">
+        A.USER_ID = #loginId#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="empno">
+        A.EMPNO = #empno#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="email">
+        A.EMAIL = #email#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCd">
+        A.USER_TP_CD = #userTpCd#
+    </isNotEmpty>
+    <isNotEmpty prepend="AND" property="userTpCds">
+        A.USER_TP_CD IN (#userTpCds#)
+    </isNotEmpty>
+    </dynamic>
+  	</select>
+
+	<resultMap class="map" id="rmPrivList">
+	   <result property="code" column="code"/>
+	</resultMap>
+
+  	<select id="userPrivList" parameterClass="map" resultClass="map" >
+  	<![CDATA[ /* loginXP.userPrivList */ ]]>
+     SELECT priv_cd AS code
+       FROM SY_USER_CTG_PRIV
+      WHERE user_id = #userId#
+     <dynamic>
+    	<isNotEmpty prepend="and" property="today">
+			#today# BETWEEN priv_st_ymd AND priv_ed_ymd
+    	</isNotEmpty>
+     </dynamic>
+  	</select>
+
+    <!-- 부서장 정보 조회 -->
+	<select id="retrieveOrgOfcr" parameterClass="string" resultClass="map" >
+	    <![CDATA[ /* loginXP.retrieveOrgOfcr */ ]]>
+	    SELECT A.USER_ID
+             , A.USER_ID AS LOGIN_ID
+             , A.EMP_NO
+             , A.PWD
+             , A.USER_KNM
+             , A.TELNO
+             , A.EMAIL
+             , A.USE_YN
+             , A.LOCL_CD
+             , A.NAT_CD
+             , A.ORG_CD
+             , (SELECT FN_SY_GET_ORG_NM(A.ORG_CD) FROM DUAL) AS ORG_NM
+             , A.USER_TP_CD
+             , A.MPHONE_NO
+          FROM SY_USER A
+         WHERE A.USER_ID = (
+               SELECT HORG_EMPL_NO
+                 FROM SY_ORG
+                WHERE ORG_CD = (
+                      SELECT ORG_CD
+                        FROM SY_USER
+                       WHERE USER_ID = #userId#
+                               )
+                            )
+
+	</select>
+
+	<!-- 사용자 암호 수정 -->
+    <update id="changePwd" parameterClass="map">
+		<![CDATA[ /* loginXP.changePwd */ ]]>
+		UPDATE SY_USER SET
+             , PWD = #pwd#
+             , FNL_EDIT_USER_ID = #fnlEditUserId#
+             , FNL_EDIT_DT = SYSDATE
+				
+				, OGG_TIME  = TO_TIMESTAMP(#oggTime#, 'YYYYMMDDHH24MISSFF')
+		WHERE 1 = 1
+	    <isNotEmpty prepend="AND" property="userId">
+            USER_ID = #userId#
+	    </isNotEmpty>
+    </update>
+
+    <select id="retrieveOrgList" parameterClass="map" resultClass="map" >
+		<![CDATA[ /* loginXP.retrieveOrgList */ ]]>
+		SELECT A.ORG_CD
+             , A.ORG_CD SITE_CD
+             , A.HGR_ORG_CD
+             , A.HGR_ORG_CD AS CENTER_ORG_CD
+             , A.ORG_NM
+             , A.ORG_NM	SITE_NM
+             , A.ORG_ABBRNM
+             , A.ORG_ABBRNM SITE_ABBRNM
+             , A.ORG_NM_EN
+             , A.ORG_CHRC_CLS
+             , A.USE_YN
+             , A.CT_DEPT_CODE
+             , A.FC_DEPT_CODE
+             , D.CRNCY_CODE CURRENCY
+             , B.CPR_CODE
+             , C.NATION_CODE NAT_CD
+             , C.DATE_FRMT, C.CURR_FRMT, C.HOTEL_GRD, C.HOTEL_MNG_TP, C.MDM_USE_AT, C.ERP_USE_AT, C.MOIN_USE_AT
+       FROM  SY_ORG A
+           , (SELECT DISTINCT CPR_CODE, ORG_CD FROM  V_SY_DEPT) B
+           , SY_GROUP_CTG_SITE C
+           , SY_CM_CPR_CODE D
+      WHERE A.ORG_CD = B.ORG_CD(+)
+        AND A.ORG_CD = C.SITE_CD(+)
+        AND B.CPR_CODE = D.CPR_CODE
+        <dynamic>
+		    <isNotEmpty prepend="AND" property="qryYn">
+               A.QRY_YN = 'Y'
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="orgCd">
+               A.ORG_CD = #orgCd#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="orgNm">
+               A.ORG_NM LIKE '%'||#orgNm#||'%'
+		    </isNotEmpty>
+	    </dynamic>
+    </select>
+
+    <select id="retrieveDeptList" parameterClass="map" resultClass="map" >
+		<![CDATA[ /* loginXP.retrieveDeptList */ ]]>
+		SELECT A.CPR_CODE
+             , A.DEPT_CODE
+             , A.DEPT_NM
+             , A.UPPER_DEPT_CODE AS UPPER_DEPT_CODE
+             , A.UPPER_DEPT_CODE AS CENTER_ORG_CD
+             , A.CT_DEPT_CODE
+             , A.BUDGET_DEPT_CODE
+             , A.PRFLOS_CNTER_CODE
+             , A.BSNS_RELM_CODE
+             , A.ORG_CD
+	      FROM V_SY_DEPT A
+         WHERE 1=1
+        <dynamic>
+		    <isNotEmpty prepend="AND" property="deptCode">
+               A.DEPT_CODE = #deptCode#
+		    </isNotEmpty>
+		    <isNotEmpty prepend="AND" property="deptNm">
+               A.DEPT_NM LIKE '%'||#deptNm#||'%'
+		    </isNotEmpty>
+	    </dynamic>
+    </select>
+
+  <select id="topMenuList" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.topMenuList */ ]]>
+    SELECT AA.DUTY_SYS_CD
+         , AA.MENU_ID
+         , AA.MENU_NM
+         , AA.MENU_EXPL
+         , AA.MENU_LVL
+         , AA.MENU_CD
+         , AA.MENU_URL
+         , AA.MENU_VAR
+         , AA.HGR_MENU_ID
+         , AA.ARRAY_ORD
+         , AA.QRY_YN
+         , AA.POPUP_YN
+         , AA.MENU_HPWRD_FILE_NM
+     FROM
+	    <isEmpty property="sysAdmin">
+           (SELECT DISTINCT DUTY_SYS_CD
+                 , A.MENU_ID
+	             , A.MENU_NM
+	             , A.MENU_EXPL
+	             , A.MENU_CD
+	             , A.MENU_LVL
+	             , A.MENU_URL
+	             , A.MENU_VAR
+	             , A.HGR_MENU_ID
+	             , A.ARRAY_ORD
+	             , A.QRY_YN
+	             , A.POPUP_YN
+	             , A.MENU_HPWRD_FILE_NM
+	          FROM SY_MENU A
+             WHERE A.MENU_LVL = 1
+               AND A.USE_YN = 'Y'
+               AND A.QRY_YN = 'Y')
+	    </isEmpty>
+	    <isNotEmpty property="sysAdmin">
+           (SELECT DISTINCT DUTY_SYS_CD
+                 , A.MENU_ID
+                 , A.MENU_NM
+                 , A.MENU_EXPL
+                 , A.MENU_LVL
+                 , A.MENU_CD
+                 , A.MENU_URL
+                 , A.MENU_VAR
+                 , A.HGR_MENU_ID
+                 , A.ARRAY_ORD
+                 , A.QRY_YN
+                 , A.POPUP_YN
+                 , A.MENU_HPWRD_FILE_NM
+              FROM SY_MENU          A
+        INNER JOIN SY_PRIV_CTG_MENU B ON (A.MENU_ID = B.MENU_ID)
+             WHERE A.MENU_LVL = 1
+               AND A.USE_YN = 'Y'
+               AND A.QRY_YN = 'Y'
+               AND B.SYS_CD = #sysCd#
+       <iterate prepend="AND B.PRIV_CD IN " property="privCd" open="("	close=")" conjunction=",">
+               #privCd[]#
+       </iterate>
+            )
+      </isNotEmpty>
+			AA
+             ORDER BY ARRAY_ORD
+  </select>
+  <!-- 국가정보 조회 -->
+  <select id="retrieveNatList" parameterClass="map" resultClass="map" >
+    <![CDATA[ /* loginXP.retrieveNatList */ ]]>
+		SELECT NATION_CODE    
+             , NATION_NM      
+             , IOS_NATION_CODE
+		FROM SY_NATION_CODE
+		WHERE NATION_CODE = #natCd#
+  </select>
+</sqlMap>

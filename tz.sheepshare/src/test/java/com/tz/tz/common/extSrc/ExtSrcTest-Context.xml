@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tzcore="http://www.tz.com/schema/tzcore"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.tz.com/schema/tzcore http://10.135.31.101:7001/tzHome/common/config/tz-core-1.0.xsd">
+
+	<context:component-scan base-package="tz.common"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
+	</context:component-scan>
+
+	<!-- 공통 contoller 빈 생성 -->
+	<context:component-scan base-package="tz.base" />
+	<context:component-scan base-package="tz.extend" />
+	<context:component-scan base-package="tz.common" />
+	<context:component-scan base-package="com.tz.tz" />
+
+ 	<import resource="classpath:test-dispatcher-imports.xml"/>
+
+</beans>
+
