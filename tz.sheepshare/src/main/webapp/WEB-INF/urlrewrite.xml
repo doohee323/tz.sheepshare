@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.1//EN" "http://tuckey.org/res/dtds/urlrewrite3.1.dtd">
+<urlrewrite default-match-type="wildcard">
+
+	<rule match-type="wildcard">
+		<note>공통</note>
+		<from>/tz/*/*/*.ajax</from>
+		<to>/tz/$1/$2/$3.tz</to>
+	</rule>
+
+	<rule match-type="wildcard">
+		<note>공통화면</note>
+		<from>/tz*/*/*/*.ajax</from>
+		<to>/tz$1/$2/$3/$4.tz</to>
+	</rule>
+
+	<rule match-type="wildcard">
+		<note>업무공통</note>
+		<from>/tz*/*/*/*/*/*/*.ajax</from>
+		<to>/tz$1/$2/$3/$4/$5/$6/$7.tz</to>
+	</rule>
+	
+	<rule match-type="wildcard">
+		<note>sheepshare</note>
+		<from>/com/sheepshare/*/*.ajax</from>
+		<to>/com/sheepshare/$1/$2.sheepshare</to>
+	</rule>
+
+    <rule>
+        <from>/favicon.ico</from>
+        <to last="true">/favicon.ico</to>
+    </rule>
+
+	<rule>
+		<from>/common/**</from>
+		<to last="true">/common/$1</to>
+	</rule>
+
+	<rule>
+		<from>/images/**</from>
+		<to last="true">/images/$1</to>
+	</rule>
+
+</urlrewrite>

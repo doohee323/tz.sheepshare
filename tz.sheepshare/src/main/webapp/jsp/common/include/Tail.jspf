@@ -1,0 +1,36 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%--
+/*
+ *************************************************************************
+ * @source  : tail.jsp
+ * @desc    : Included JSP Page
+ *------------------------------------------------------------------------
+ * VER  DATE         AUTHOR      DESCRIPTION
+ * ---  -----------  ----------  -----------------------------------------------
+ * 1.0  2013.01.18   TZ    최초구현
+ *************************************************************************
+ */
+--%>
+
+<div id="LblockFooter" class="LblockFooter">
+<div id="LblockFooterLogo" class="LblockFooterLogo"></div>
+<div id="LblockFooterMenu" class="LblockFooterMenu">
+<%
+   if(request.getAttribute("srcNavi") != null) {
+%>
+    <%=request.getAttribute("srcNavi")%>
+<%
+   }
+%>
+</div>
+<div id="LblockFooterCopyright" class="LblockFooterCopyright"></div>
+</div>
+<%--
+/*
+ *************************************************************************
+ * Page Processing Information
+ *------------------------------------------------------------------------
+ * Elapsed Time
+ *************************************************************************
+ */
+--%>

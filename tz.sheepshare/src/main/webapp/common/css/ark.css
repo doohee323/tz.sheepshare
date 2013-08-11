@@ -1,0 +1,95 @@
+@charset "utf-8";
+
+/* 자동완성 전체 지정*/
+#ark_wrap{ 	
+	position:absolute;
+	z-index:100;
+	padding:0px; 
+}
+
+/* 자동완성 실제 범위 지정 */
+#ark_sub_wrap{ 	
+	position:absolute;
+	display:none;
+	padding:0px; 
+	background-color:#FFF; 	
+	border:1px solid #d3d3d3;
+}
+
+/* 검색 키워드 입력 박스 화살표 이미지 스타일 */
+#ark_down{
+	position:absolute;
+	display:block;
+}
+
+/* 검색 키워드 입력 박스 화살표 이미지 스타일 */
+#ark_up{
+	position:absolute;
+	display:none;
+}
+
+#ark_img_down{ cursor:pointer;}
+#ark_img_up{ cursor:pointer;}
+
+/* 자동완성 가이드 */
+#ark_guide {
+	padding:7px 7px 4px 6px;  
+	background: #ffffff;  
+	font-size:11px; 
+	color:#545454; 
+	font-family:"돋움", dotum; 
+	line-height:15px; 
+	text-align:left;
+}
+#ark_guide b {color:#EB6F00;}
+#ark_guide a:link {font-size:11px; color:#EB6F00; font-family:"돋움", dotum; text-decoration:underline}
+#ark_guide a:visited {font-size:11px; color:#EB6F00; font-family:"돋움", dotum; text-decoration:underline}
+#ark_guide a:hover {font-size:11px; color:#EB6F00; font-family:"돋움", dotum; text-decoration:underline}
+
+/* 자동완성 풋터 */
+#ark_footer {
+	background-color:#ededed; 
+	font-size:11px; 
+	color:#666;
+	padding:3px 0 0 0; 
+}
+#ark_footer a:link {font-size:11px; color:#6B6968; font-family:"돋움", dotum; text-decoration:none}
+#ark_footer a:visited {font-size:11px; color:#6B6968; font-family:"돋움", dotum; text-decoration:none}
+#ark_footer a:hover {font-size:11px; color:#6B6968; font-family:"돋움", dotum; text-decoration:underline}
+
+/* 자동완성 결과 리스트 */
+.ark_content {
+	padding:1px 0 0 0; border:#dae5eb solid 1px; background:#ffffff; ;
+}
+
+.ark_content .list {
+	width: auto;
+	padding:0 1px 1px 1px; 
+	text-align:left;
+}
+
+.ark_content ul {
+	list-style: none;
+	margin: 0;
+	padding:0px 0px 0px 4px; 
+}
+
+.ark_content li {
+	overflow: hidden;
+	margin: 0;
+	padding: 1px 0px 1px 0px;
+	background-color: white;
+	text-overflow: ellipse;
+	cursor: pointer;
+}
+
+/* .ark_content .line {background-image:url(../img/ark_dog_bg.gif); repeat-x; height:3px; font-size:0px; padding:0; margin:7px 5px 6px 5px;} */
+
+.ark_content li {
+	overflow: hidden;
+	margin: 0;
+	padding: 2px 0px 2px 0px;
+	background-color: white;
+	text-overflow: ellipse;
+	cursor: pointer;
+}

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="tz.sheepshare">
+        <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources/local"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources/common"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java/framework"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <property name="java-output-path" value="/tz.sheepshare/target/classes"/>
+        <property name="context-root" value=""/>
+    </wb-module>
+</project-modules>

@@ -1,0 +1,58 @@
+<%@ include file="/jsp/common/include/doctype.jspf"%>
+
+<%@ page import="java.util.HashMap,
+            java.util.Map,
+            java.util.List,
+            java.util.ArrayList,
+            tz.extend.iam.UserInfo,
+            tz.extend.iam.authentication.UserDefinition,
+            tz.basis.iam.core.common.util.UserInfoHolder,
+            tz.extend.core.mvc.context.WebContext,
+            tz.extend.config.Constants"
+            %>
+<%-- JSTL 1.2 Standard Tag Declaration --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c_rt" uri="http://java.sun.com/jstl/core_rt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Spring Tag Declaration --%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<base href="<%--=baseUrl+"/" --%>" ></base>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>[Topzone 2013]</title>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+
+<%
+  response.setHeader("Pragma", "no-cache;");
+  response.setHeader("Expires", "-1;");
+
+  String contextPath = request.getContextPath();
+  System.out.println("contextPath : " + contextPath);
+  String imagePath =   contextPath + "/images";
+  String cssPath =     contextPath + "/common/css";
+  String jsPath =      contextPath + "/common/js";
+  
+  UserDefinition $userData = UserInfoHolder.getUserInfo(UserDefinition.class);
+  System.out.println("=============$userData" + $userData);
+
+%>
+<c:set var="imagePath" value="${pageContext.request.contextPath}/images" />
+<c:set var="cssPath" value="${pageContext.request.contextPath}/common/css" />
+<c:set var="jsPath" value="${pageContext.request.contextPath}/common/js" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<script type="text/javascript">
+//<![CDATA[
+    var gPath   = '<%=contextPath%>';
+//]]>-->
+</script>
+
+<script type='text/javascript' src='${pageContext.request.contextPath}/jquery/jquery-1.7.1.js' ></script>
+<script type="text/javascript" src="${jsPath}/head.js"></script>
+<script type="text/javascript" src="${jsPath}/tzdu.js"></script>
+
+

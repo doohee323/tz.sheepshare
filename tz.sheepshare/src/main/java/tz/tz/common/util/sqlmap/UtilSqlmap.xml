@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--************************************************************************************
+* 프로그램 : util
+* 설    명 :
+* 작 성 자 :
+* 작성일자 :
+* SQL 목록
+***************************************************************************************
+* SQLID                 설명
+***************************************************************************************
+* retrieveSequence db sequence 조회
+* retrieveZpCdListPopup 우편번호 조회
+* retrieveLocaleCd locale code 조회
+*************************************************************************************-->
+<sqlMap namespace="util">
+
+     <!--***************************************************************
+    * 설명            : db sequence 조회
+    ****************************************************************-->
+    <select id="retrieveSequence" parameterClass="map" resultClass="String">
+	<![CDATA[ /* util.retrieveSequence */ ]]>
+		SELECT FN_SY_GET_SEQUENCE_NEXTVAL(#seqNm#, #groupId#) AS seq_num
+		  FROM DUAL
+    </select>
+
+    <!--***************************************************************
+    * 설명            : 우편번호 조회
+    ****************************************************************-->
+	<resultMap id="rmZpCdList" class="java.util.HashMap">
+		<result property="zipcd" column="zipcd"    />
+		<result property="zipcdSeq" column="zipcd_seq"  javaType="java.lang.Integer"  />
+		<result property="inqAddr" column="inq_addr"/>
+		<result property="zipcdValue" column="zipcd_value"/>
+	</resultMap>
+
+    <select id="retrieveZpCdListPopup" resultMap="rmZpCdList" >
+    <![CDATA[ /* util.retrieveZpCdListPopup */ ]]>
+       SELECT zipcd
+            , zipcd_seq
+            , ADDR AS inq_addr
+            , ADDR_SI_DO || ' ' || ADDR_SI_GUN_GU || ' ' || DECODE( TRIM(ADDR_EUP_MYEON_DONG), NULL , '',  TRIM(ADDR_EUP_MYEON_DONG) || ' ' ) ||
+              DECODE( TRIM(ADDR_LI), NULL , '',  TRIM(ADDR_LI) || ' ' ) ||
+			  TRIM(ADDR_BLDG_NM) AS zipcd_value
+         FROM SY_ZIPCD
+        <dynamic prepend="WHERE">
+	    <isNotEmpty prepend="AND" property="zipcd">
+	    	ZIPCD LIKE '%'||#zipcd#||'%'
+	    </isNotEmpty>
+	    <isNotEmpty prepend="AND" property="name">
+	    	(ADDR_EUP_MYEON_DONG LIKE '%'||#name#||'%' OR ADDR_LI LIKE '%'||#name#||'%' OR ADDR LIKE '%'||#name#||'%')
+	    </isNotEmpty>
+	    </dynamic>
+    </select>
+
+    <!--***************************************************************
+    * 설명            : locale code 조회
+    ****************************************************************-->
+    <resultMap id="rmLoclCdMap" class="java.util.HashMap">
+		<result property="code" column="code"    />
+		<result property="value" column="value"/>
+	</resultMap>
+
+    <select id="retrieveLocaleCd" parameterClass="map" resultMap="rmLoclCdMap">
+		<![CDATA[ /* util.retrieveLocaleCd */ ]]>
+		SELECT DISTINCT LOCL_CD AS code
+		     , LOCL_NM AS value
+		  FROM SY_LOCL
+		 WHERE USE_YN = 'Y'
+		   AND SYS_CD = #sysCd#
+    </select>
+
+    <!--***************************************************************
+    * 설명            : SYSDATE 조회
+    ****************************************************************-->
+    <select id="retrieveSysDate" parameterClass="map" resultClass="java.lang.String">
+		<![CDATA[ /* util.retrieveSysDate */ ]]>
+		SELECT TO_CHAR(SYSDATE, 'YYYYMMDD') AS S_DATE
+		  FROM DUAL
+    </select>
+
+    <!--***************************************************************
+    * 설명            : 개발자 조회
+    ****************************************************************-->
+    <select id="retrieveDevNm" parameterClass="map" resultClass="java.lang.String">
+		<![CDATA[ /* util.retrieveDevNm */ ]]>
+		SELECT DEV_NM
+		FROM W01S.IA950_PGM_VERF A, SY_MENU B
+		WHERE ITM_ID = MENU_CD
+		AND MENU_ID = #menuId#
+    </select>
+
+    <!--***************************************************************
+    * 설명            : 미완료 건수 조회
+    ****************************************************************-->
+    <select id="retrieveTodoCnt" parameterClass="map" resultClass="java.lang.String">
+		<![CDATA[ /* util.retrieveTodoCnt */ ]]>
+		SELECT COUNT(1) AS cnt
+		FROM IA950_PGM_VERF_CHK A, IA950_PGM_VERF B, SY_MENU C
+		WHERE A.PGM_ID = B.PGM_ID
+		AND A.MDL_GB = B.MDL_GB
+		AND B.ITM_ID = C.MENU_CD
+		AND A.DEL_GB = 1
+		AND A.STATS = 'N'
+		AND C.MENU_ID = #menuId#
+	 <![CDATA[ AND A.SRI	<> 'P']]>
+    </select>
+</sqlMap>
+
