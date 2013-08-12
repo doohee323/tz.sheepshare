@@ -67,22 +67,4 @@
 		<property name="queueCapacity" value="100000" />
 	</bean>
 
-	<!-- default SqlMapClient begin -->
-    <bean id="defaultSqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
-        <property name="sqlMapClient" ref="defaultSqlMapClient" />
-    </bean>
-
-	<bean id="defaultSqlMapClient" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean"
-		p:dataSource-ref="dataSource" p:configLocation="classpath:/ibatis/SqlmapConfig.xml"
-		p:lobHandler-ref="lobHandler"
-		lazy-init="true">
-		<property name="mappingLocations">
-		<list>
-			<value>classpath*:com/tz/**/sqlmap/*Sqlmap.xml</value>
-			<value>classpath*:tz/common/**/sqlmap/*Sqlmap.xml</value>
-		</list>
-		</property>
-	</bean>	
-	<!-- default SqlMapClient end -->
-
 </beans>
