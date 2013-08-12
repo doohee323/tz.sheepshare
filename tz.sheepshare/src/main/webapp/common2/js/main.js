@@ -31,7 +31,7 @@ var LoginV = Backbone.View.extend({
 		};
 		$.ajax({
 			type : "post",
-			url : 'sy/common/login/existUserId.xpl',
+			url : 'tz/common/login/existUserId.ajax',
 			data : JSON.stringify(params),
 			datatype : "json",
 			contentType : "application/json+core; charset=utf-8",

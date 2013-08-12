@@ -121,7 +121,7 @@ public abstract class AbstractTzFileOperator implements FileOperator {
 			params.putAll(multiInfo.getAttributes());
 
 // ksahn@e-int.co.kr
-			Map<String, Object> parameterMap = request.getParameterMap();
+			Map<String, String[]> parameterMap = request.getParameterMap();
 			Enumeration paramNames = request.getParameterNames();
 
 			while(paramNames.hasMoreElements()) {

@@ -21,6 +21,7 @@
 
 	<!-- °øÅë contoller ºó »ý¼º -->
 	<context:component-scan base-package="tz.common" />
+	<context:component-scan base-package="com.sheepshare" />
 
 	<task:executor id="aexecutor" pool-size="40"/>
 	<task:annotation-driven executor="aexecutor" proxy-target-class="true"/>

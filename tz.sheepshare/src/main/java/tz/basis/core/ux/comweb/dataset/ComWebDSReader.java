@@ -42,7 +42,7 @@ public class ComWebDSReader implements DSReader {
 
             }else{
                 @SuppressWarnings("unchecked")
-                Map<String, Object> parameterMap = request.getParameterMap();
+                Map<String, String[]> parameterMap = request.getParameterMap();
                 paramMap.putAll(parameterMap);
                 paramMap.putAll(getParameters(request.getQueryString()));
             }

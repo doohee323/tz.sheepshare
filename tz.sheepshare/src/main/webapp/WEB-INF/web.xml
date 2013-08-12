@@ -51,18 +51,18 @@
     <filter-name>springSecurityFilterChain</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  <filter>
-    <filter-name>UrlRewriteFilter</filter-name>
-    <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
-    <init-param>
-      <param-name>logLevel</param-name>
-      <param-value>ERROR</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>UrlRewriteFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
+<!--   <filter> -->
+<!--     <filter-name>UrlRewriteFilter</filter-name> -->
+<!--     <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class> -->
+<!--     <init-param> -->
+<!--       <param-name>logLevel</param-name> -->
+<!--       <param-value>ERROR</param-value> -->
+<!--     </init-param> -->
+<!--   </filter> -->
+<!--   <filter-mapping> -->
+<!--     <filter-name>UrlRewriteFilter</filter-name> -->
+<!--     <url-pattern>/*</url-pattern> -->
+<!--   </filter-mapping> -->
   <servlet>
     <servlet-name>tz</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -73,20 +73,39 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>tz</servlet-name>
-    <url-pattern>*.tz</url-pattern>
+    <url-pattern>*.ajax</url-pattern>
   </servlet-mapping>
+  
   <servlet>
-    <servlet-name>sheepshare</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <servlet-name>jsp</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
     <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>/WEB-INF/config/sheepshare-servlet.xml</param-value>
+        <param-name>logVerbosityLevel</param-name>
+        <param-value>DEBUG</param-value>
     </init-param>
+    <init-param>
+        <param-name>fork</param-name>
+        <param-value>>false</param-value>
+    </init-param>
+    <init-param>
+        <param-name>keepgenerated</param-name>
+        <param-value>>true</param-value>
+    </init-param>
+    <load-on-startup>0</load-on-startup>
   </servlet>
+ 
   <servlet-mapping>
-    <servlet-name>sheepshare</servlet-name>
-    <url-pattern>*.sheepshare</url-pattern>
+    <servlet-name>jsp</servlet-name>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>*.jspf</url-pattern>
+    <url-pattern>*.jspx</url-pattern>
+    <url-pattern>*.xsp</url-pattern>
+    <url-pattern>*.JSP</url-pattern>
+    <url-pattern>*.JSPF</url-pattern>
+    <url-pattern>*.JSPX</url-pattern>
+    <url-pattern>*.XSP</url-pattern>
   </servlet-mapping>
+  
   <session-config>
     <session-timeout>1440</session-timeout>
   </session-config>
