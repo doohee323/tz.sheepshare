@@ -1,17 +1,15 @@
 package tz.extend.config;
 
-import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
-
-import tz.extend.util.StringUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.util.ReflectionTestUtils;
+
+import tz.extend.util.config.ConfigUtil;
 
 /**
  * <pre>
@@ -64,105 +62,7 @@ public class Constants {
      */
     @PostConstruct
     public void init(){
-        
-        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-        path = path.substring(path.indexOf("/") + 1, path.length());
-        if(path.indexOf(":") > -1) {
-            path = path.substring(0, path.indexOf(":") + 1);
-            ReflectionTestUtils.setField(this, "drive", path);
-        } else {
-            ReflectionTestUtils.setField(this, "drive", "");
-        }
-        
-        for(Enumeration en = appProperties.propertyNames(); en.hasMoreElements();){
-            String fieldNm = (String)en.nextElement();
-            String value = appProperties.getProperty(fieldNm);
-
-            if(fieldNm.equals("tz.serverInfo.docRoot")){
-                path = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-                if(path.indexOf("WEB-INF")  > -1) {
-                    path = path.substring(path.indexOf("/") + 1, path.indexOf("WEB-INF") - 1);
-                } else {
-                    path = path.substring(path.indexOf("/") + 1, path.length());
-                    path = path.substring(0, path.indexOf(":") + 1);
-                    path += "/temp";
-                }
-                value = path;
-                ReflectionTestUtils.setField(this, "docRoot", value);
-                appProperties.setProperty(fieldNm, value);
-            }else if(fieldNm.equals("tz.serverInfo.appRoot")){
-                path = this.getClass().getProtectionDomain().getCodeSource().getLocation().toString();
-                if(path.indexOf("WEB-INF") > -1) {
-                    path = path.substring(path.indexOf("/") + 1, path.indexOf("WEB-INF")) + "WEB-INF/classes" + value;
-                } else {
-                    path = path.substring(path.indexOf("/") + 1, path.indexOf("classes")) + "classes" + value;
-                }
-                value = path;
-                ReflectionTestUtils.setField(this, "appRoot", value);
-                appProperties.setProperty(fieldNm, value);
-            }else if(fieldNm.equals("tz.serverInfo.working")){
-                value = setEnvVal(value);
-                ReflectionTestUtils.setField(this, "workingDir", value);
-                appProperties.setProperty(fieldNm, value);
-            }
-        }
-        
-        for(Enumeration en = appProperties.propertyNames(); en.hasMoreElements();){
-            String fieldNm = (String)en.nextElement();
-            String value = appProperties.getProperty(fieldNm);
-
-            if(value.indexOf("#") > -1){
-                value = setEnvVal(value);
-            }
-
-            if(fieldNm.equals("tz.serverInfo.upload.default")){
-                ReflectionTestUtils.setField(this, "uploadDefault", value);
-            }else if(fieldNm.equals("tz.serverInfo.sysCd")){
-                ReflectionTestUtils.setField(this, "sysCd", value);
-            }else if(fieldNm.equals("tz.serverInfo.systemNm")){
-                ReflectionTestUtils.setField(this, "systemNm", value);
-            }else if(fieldNm.equals("tz.serverInfo.groupId")){
-                ReflectionTestUtils.setField(this, "groupId", value);
-            }else if(fieldNm.equals("tz.serverInfo.defaultGroupId")){
-                ReflectionTestUtils.setField(this, "defaultGroupId", value);
-            }else if(fieldNm.equals("tz.serverInfo.stage")){
-                ReflectionTestUtils.setField(this, "stage", value);
-            }else if(fieldNm.equals("tz.accessLog.ipForward")){
-                ReflectionTestUtils.setField(this, "accessLogIpForward", value);
-            }else if(fieldNm.equals("tz.initPage.encodingType")){
-                ReflectionTestUtils.setField(this, "initPageEncodingType", value);
-            }else if(fieldNm.equals("tz.xp.adlFile")){
-                ReflectionTestUtils.setField(this, "xpAdlFile", value);
-            }else if(fieldNm.equals("tz.xp.cabVer")){
-                ReflectionTestUtils.setField(this, "xpCabVer", value);
-            }
-            
-            appProperties.setProperty(fieldNm, value);
-        }
-
-    }
-
-    /**
-     * <pre>
-     * setEnvVal
-     * </pre>
-     * @param value
-     */
-    public static String setEnvVal(String value){
-        try{
-            if(value.indexOf("#appRoot") > -1){
-                value = StringUtil.replace(value, "#appRoot", Constants.appRoot);
-            }else if(value.indexOf("#docRoot") > -1){
-                value = StringUtil.replace(value, "#docRoot", Constants.docRoot);
-            }else if(value.indexOf("#workingDir") > -1){
-                value = StringUtil.replace(value, "#workingDir", Constants.workingDir);
-            }else if(value.indexOf("#drive") > -1){
-                value = StringUtil.replace(value, "#drive", Constants.drive);
-            }
-            return StringUtil.replace(value, "\\", "/");
-        }catch(Exception e){
-            return "";
-        }
+        appProperties = ConfigUtil.init(appProperties, this);
     }
 
     /**
