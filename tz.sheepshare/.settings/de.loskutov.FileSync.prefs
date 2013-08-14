@@ -1,0 +1,7 @@
+WARNING=DO NOT MODIFY THIS FILE IF YOU DON'T UNDERSTAND
+defaultDestination=C\:/Users/doohee/git/heroku/topzone2013
+defaultVariables=
+eclipse.preferences.version=1
+includeTeamPrivateFiles=false
+map|0=/|,|,|.classpath;.classpath.bak;.gitignore;.project;.project.bak;.settings/;.springBeans;build.properties;build.xml;pom.xml;spy.log;target/|,
+useCurrentDateForDestinationFiles=false
