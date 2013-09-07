@@ -8,20 +8,22 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.tools.ant.taskdefs.MacroInstance.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 
 import tz.common.code.service.CodeService;
 import tz.common.locale.service.LocaleService;
 import tz.extend.iam.UserInfo;
 import tz.extend.util.StringUtil;
+//import net.sf.ehcache.Cache;
+//import net.sf.ehcache.CacheManager;
+//import net.sf.ehcache.Element;
 
 /**
  * <pre>
@@ -121,7 +123,7 @@ public class CodeCache {
                 Map<String, Object> input = new HashMap<String, Object>();
                 input.put("loclCd", loclCd);
                 List<Map<String, Object>> groupValueList = commonService.commGrpCdValueList(input);
-                getCache().put(new Element(buildCodeCacheKey(KEY_COMM_GRP_CDS, loclCd), groupValueList));
+//                getCache().put(new Element(buildCodeCacheKey(KEY_COMM_GRP_CDS, loclCd), groupValueList));
             }
         }catch(Exception e){
             logger.error("loadCommGrpCdList() : " + e);
@@ -180,9 +182,9 @@ public class CodeCache {
                                     .equals(codeList.get(j + 1).get("commGrpCd").toString())){
                         codeListTmp.add(codeListTmp.size(), codeList.get(j));
 
-                        getCache().put(
-                                new Element(buildCodeCacheKey(codeList.get(j).get("commGrpCd").toString(), loclCd),
-                                        codeListTmp));
+//                        getCache().put(
+//                                new Element(buildCodeCacheKey(codeList.get(j).get("commGrpCd").toString(), loclCd),
+//                                        codeListTmp));
 
                         codeListTmp = new ArrayList<Map<String, Object>>();
                     }else{
@@ -190,9 +192,9 @@ public class CodeCache {
                     }
                 }
                 if(!codeListTmp.isEmpty()){
-                    getCache()
-                            .put(new Element(buildCodeCacheKey(codeList.get(codeList.size() - 1).get("commGrpCd")
-                                    .toString(), loclCd), codeListTmp));
+//                    getCache()
+//                            .put(new Element(buildCodeCacheKey(codeList.get(codeList.size() - 1).get("commGrpCd")
+//                                    .toString(), loclCd), codeListTmp));
                 }
             }
         }catch(Exception e){
@@ -229,7 +231,8 @@ public class CodeCache {
      */
     public List<Map<String, Object>> getCodeCache(String comm_grp_cd){
         String cacheKey = buildCodeCacheKey(comm_grp_cd);
-        return (List<Map<String, Object>>)getCache().get(cacheKey).getObjectValue();
+//        return (List<Map<String, Object>>)getCache().get(cacheKey).getObjectValue();
+        return null;
     }
 
     /**
@@ -241,7 +244,8 @@ public class CodeCache {
      */
     public List<Map<String, Object>> getCommGrpCdCache(){
         String cacheKey = buildCodeCacheKey(KEY_COMM_GRP_CDS);
-        return (List<Map<String, Object>>)getCache().get(cacheKey).getObjectValue();
+//        return (List<Map<String, Object>>)getCache().get(cacheKey).getObjectValue();
+        return null;
     }
 
     /**
@@ -252,7 +256,8 @@ public class CodeCache {
      * @return
      */
     public Object getCache(Object key){
-        return getCache().get(key).getObjectValue();
+//        return getCache().get(key).getObjectValue();
+        return null;
     }
 
     /**
@@ -263,7 +268,7 @@ public class CodeCache {
      * @param value 새로운 캐시 값
      */
     public void refresh(Object key, Object value){
-        getCache().put(new Element(key, value));
+//        getCache().put(new Element(key, value));
     }
 
     /**
@@ -273,7 +278,7 @@ public class CodeCache {
      * @param key 캐시 키
      */
     public void remove(Object key){
-        getCache().remove(key);
+//        getCache().remove(key);
         logger.debug("remove()");
     }
 

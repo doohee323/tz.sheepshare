@@ -121,7 +121,7 @@ public class WSExecutor {
                 String name = dataIterator.next().toString();
                 String value = parameter.get(name).toString();
                 Element el = doc.createElement(name);
-                el.setTextContent(value);
+//                el.setTextContent(value);
                 root.appendChild(el);
             }
 
@@ -176,7 +176,7 @@ public class WSExecutor {
                     if(children.item(i).hasChildNodes()){
                         NodeList children2 = children.item(i).getChildNodes();
                         for(int j = 0; j < children2.getLength(); j++){
-                            result.put(children2.item(i).getNodeName(), children2.item(j).getTextContent());
+//                            result.put(children2.item(i).getNodeName(), children2.item(j).getTextContent());
                         }
                     }
                 }

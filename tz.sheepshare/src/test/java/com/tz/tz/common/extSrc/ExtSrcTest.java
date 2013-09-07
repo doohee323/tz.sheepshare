@@ -5,8 +5,8 @@ import java.util.Map;
 
 import tz.extend.test.TestSupport;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,7 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 //@Ignore
 public class ExtSrcTest extends TestSupport {
@@ -30,7 +30,7 @@ public class ExtSrcTest extends TestSupport {
 //    @Autowired
 //    private ExtSrcController controller;
 
-    @Test
+//    @Test
     public void inserLog(){
         try {
             Map<String, Object> input = new HashMap<String, Object>();
