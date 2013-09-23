@@ -1,0 +1,8 @@
+<header class="jumbotron subhead" id="overview">
+	<div class="page-header">
+		<h1>Main page</h1>
+		<div class="span12">
+			<p class="lead">Hello, SheepShare</p>
+		</div>
+	</div>
+</header>

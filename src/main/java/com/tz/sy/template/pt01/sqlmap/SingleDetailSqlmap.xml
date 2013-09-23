@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="SingleDetail">
+
+    <select id="retrieveEmployee" parameterClass="map" resultClass="com.tz.sy.template.pt01.domain.Employee">
+        <![CDATA[ /* SingleDetail.retrieveEmployee */ ]]>
+        SELECT emp.num,
+            emp.name,
+            emp.birthdate,
+            emp.ssn,
+            emp.sex,
+            emp.telephone,
+            emp.address,
+            emp.postal,
+            emp.skill_code skillCode,
+            emp.joblevel_code joblevelCode,
+            emp.department_code departmentCode,
+            emp.atch_file_bunch_no atchFileBunchNo,
+            emp.atch_file_bunch_no2 atchFileBunchNo2,
+            job.name as job,
+            org.name as department,
+            skill.name as skill
+        FROM UIP_EMPLOYEE   emp
+   LEFT JOIN UIP_JOBLEVEL   job   on (emp.joblevel_code = job.code)
+   LEFT JOIN UIP_DEPARTMENT org  on (emp.department_code = org.code)
+   LEFT JOIN UIP_SKILL      skill on (emp.skill_code = skill.code)
+        <dynamic prepend="WHERE">
+        	<isNotEmpty prepend="and" property="queryNum">
+                emp.num = #queryNum#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="name">
+        		emp.name like '%'||#name#||'%'
+        	</isNotEmpty>
+        </dynamic>
+	  </select>
+	  
+	<select id="retrieveEmployeeList" parameterClass="map" resultClass="map">
+        <![CDATA[ /* SingleDetail.retrieveEmployee */ ]]>
+        SELECT emp.num,
+            emp.name,
+            emp.birthdate,
+            emp.ssn,
+            emp.sex,
+            emp.telephone,
+            emp.address,
+            emp.postal,
+            emp.skill_code skillCode,
+            emp.joblevel_code joblevelCode,
+            emp.department_code departmentCode,
+            emp.atch_file_bunch_no atchFileBunchNo,
+            emp.atch_file_bunch_no2 atchFileBunchNo2,
+            job.name as job,
+            org.name as department,
+            skill.name as skill
+        FROM UIP_EMPLOYEE   emp
+   LEFT JOIN UIP_JOBLEVEL   job   on (emp.joblevel_code = job.code)
+   LEFT JOIN UIP_DEPARTMENT org  on (emp.department_code = org.code)
+   LEFT JOIN UIP_SKILL      skill on (emp.skill_code = skill.code)
+        <dynamic prepend="WHERE">
+        	<isNotEmpty prepend="and" property="queryNum">
+                emp.num = #queryNum#
+            </isNotEmpty>
+            <isNotEmpty prepend="and" property="name">
+        		emp.name like '%'||#name#||'%'
+        	</isNotEmpty>
+        </dynamic>
+	  </select>
+
+	<insert id="insertEmployee" parameterClass="com.tz.sy.template.pt01.domain.Employee">
+        <![CDATA[ /* SingleDetail.insertEmployee */ ]]>
+		INSERT INTO UIP_EMPLOYEE (
+            num,
+            name,
+            birthdate,
+            ssn,
+            sex,
+            telephone,
+            address,
+            postal,
+            joblevel_code,
+            department_code,
+            skill_code,
+            atch_file_bunch_no,
+            atch_file_bunch_no2
+        ) VALUES (
+            #num#,
+            #name#,
+            #birthdate#,
+            #ssn#,
+            #sex#,
+            #telephone#,
+            #address#,
+            #postal#,
+            #joblevelCode#,
+            #departmentCode#,
+            #skillCode#,
+            #atchFileBunchNo#,
+            #atchFileBunchNo2#
+        )
+	</insert>
+
+    <update id="updateEmployee" parameterClass="com.tz.sy.template.pt01.domain.Employee">
+        <![CDATA[ /* SingleDetail.updateEmployee */ ]]>
+		UPDATE UIP_EMPLOYEE set
+            name            = #name#,
+            birthdate       = #birthdate#,
+            ssn             = #ssn#,
+            sex             = #sex#,
+            telephone       = #telephone#,
+            address         = #address#,
+            postal          = #postal#,
+            joblevel_code   = #joblevelCode#,
+            department_code = #departmentCode#,
+            skill_code      = #skillCode#,
+            atch_file_bunch_no  = #atchFileBunchNo#,
+            atch_file_bunch_no2 = #atchFileBunchNo2#
+        WHERE num = #num#
+    </update>
+
+    <delete id="deleteEmployee" parameterClass="com.tz.sy.template.pt01.domain.Employee">
+        <![CDATA[ /* SingleDetail.deleteEmployee */ ]]>
+	    DELETE  FROM UIP_EMPLOYEE
+	     WHERE  num = #num#
+    </delete>
+
+	<select id="getEmployeeCount" parameterClass="string" resultClass="int">
+        <![CDATA[ /* SingleDetail.getEmployeeCount */ ]]>
+		SELECT  count(*) empcount
+		  FROM  UIP_EMPLOYEE
+		 WHERE  num = #num#
+	</select>
+
+    <update id="updateEappr" parameterClass="map">
+        <![CDATA[ /* SingleDetail.updateEappr */ ]]>
+		UPDATE uip_employee SET elap_id = #elapId#
+       where num = #num#
+    </update>	 
+    
+	<update id="deleteEappr" parameterClass="java.util.HashMap" >
+    	<![CDATA[ /* SingleDetail.deleteEappr */ ]]>
+       UPDATE uip_employee SET elap_id = ''
+       WHERE elap_id = #elapId#
+  </update>
+	 
+</sqlMap>

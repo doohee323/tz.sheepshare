@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CenterMgmt">
+
+	<select id="retrieveCenterList" parameterClass="string" resultClass="com.tz.sy.template.pt42.domain.Center">
+        <![CDATA[ /* CenterMgmt.retrieveCenterList */ ]]>
+        SELECT code,
+               name,
+               chief,
+               address,
+               phone
+        FROM   UIP_CENTER
+        WHERE  code != '00000'
+        <dynamic prepend="AND">
+            <isNotEmpty>
+                code = #code#
+            </isNotEmpty>
+        </dynamic>
+        order by code, name
+    </select>
+
+	<select id="retrieveRegionList" parameterClass="string" resultClass="com.tz.sy.template.pt42.domain.Region">
+        <![CDATA[ /* CenterMgmt.retrieveRegionList */ ]]>
+        SELECT code,
+               region_code,
+               name,
+               chief,
+               address
+         FROM  UIP_REGION
+        WHERE  code = #code#
+        order  by code, region_code
+	</select>
+
+	<insert id="insertCenter" parameterClass="com.tz.sy.template.pt42.domain.Center">
+        <![CDATA[ /* CenterMgmt.insertCenter */ ]]>
+        INSERT INTO UIP_CENTER (
+            code,
+            name,
+            chief,
+            address,
+            phone
+        ) VALUES (
+            #code#,
+            #name#,
+            #chief#,
+            #address#,
+            #phone#
+        )
+	</insert>
+
+    <update id="updateCenter" parameterClass="com.tz.sy.template.pt42.domain.Center">
+		<![CDATA[ /* CenterMgmt.updateCenter */ ]]>
+		UPDATE UIP_CENTER set
+            name            = #name#,
+            chief           = #chief#,
+            address         = #address#,
+            phone           = #phone#
+        WHERE code = #code#
+    </update>
+
+    <delete id="deleteCenter" parameterClass="com.tz.sy.template.pt42.domain.Center">
+        <![CDATA[ /* CenterMgmt.deleteCenter */ ]]>
+        DELETE FROM UIP_CENTER
+        WHERE code = #code#
+    </delete>
+
+	<insert id="insertRegion" parameterClass="com.tz.sy.template.pt42.domain.Region">
+		<![CDATA[ /* CenterMgmt.insertRegion */ ]]>
+		INSERT INTO UIP_REGION (
+            code,
+            region_code,
+            name,
+            chief,
+            address
+        ) VALUES (
+            #code#,
+            #regionCode#,
+            #name#,
+            #chief#,
+            #address#
+        )
+	</insert>
+
+    <update id="updateRegion" parameterClass="com.tz.sy.template.pt42.domain.Region">
+		<![CDATA[ /* CenterMgmt.updateRegion */ ]]>
+		UPDATE UIP_REGION set
+            name            = #name#,
+			chief           = #chief#,
+            address         = #address#
+        WHERE code = #code#
+		AND   region_code = #regionCode#
+    </update>
+
+    <delete id="deleteRegion" parameterClass="com.tz.sy.template.pt42.domain.Region">
+        <![CDATA[ /* CenterMgmt.deleteRegion */ ]]>
+        DELETE FROM UIP_REGION
+         WHERE code = #code#
+		   AND region_code = #regionCode#
+    </delete>
+
+    <delete id="deleteAllRegion" parameterClass="com.tz.sy.template.pt42.domain.Region">
+		<![CDATA[ /* CenterMgmt.deleteAllRegion */ ]]>
+		DELETE FROM UIP_REGION
+		WHERE code = #code#
+    </delete>
+
+</sqlMap>

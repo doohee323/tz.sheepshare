@@ -1,0 +1,34 @@
+<div class="customers view">
+    <div class="container">
+        <header>
+            <h3>Customer</h3>
+        </header>
+        <div class="row">
+            <div class="span3">
+                First Name:
+                <br />
+                <input data-ng-model="newCustomer.firstName" type="text" placeholder="First Name">
+            </div>
+            <div class="span3">
+                Last Name:
+                <br />
+                <input data-ng-model="newCustomer.lastName" type="text" placeholder="Last Name">
+            </div>
+            <div class="span3">
+                City:
+                <br />
+                <input data-ng-model="newCustomer.city" type="text" placeholder="Customer City">
+            </div>
+            <div class="span3">
+            	<input data-ng-model="newCustomer.id" type="hidden">
+                <button id="addCustomer" class="btn btn-primary" type="button" 
+                    data-ng-disabled="!newCustomer.firstName || !newCustomer.lastName || !newCustomer.city" 
+                    data-ng-click="insertCustomer()">Add Customer</button>
+                <button id="saveCustomer" class="btn btn-primary" type="button" 
+                    data-ng-click="saveCustomer()">Save Customer</button>
+                 <button id="listCustomer" class="btn btn-primary" type="button" 
+                    data-ng-click="listCustomer()">List Customer</button>
+            </div>
+        </div>
+    </div>
+</div>

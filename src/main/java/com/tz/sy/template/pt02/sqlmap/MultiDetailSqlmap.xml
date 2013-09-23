@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="MultiDetail">
+
+    <select id="retrieveEmployeeList" parameterClass="map" resultClass="com.tz.sy.template.pt01.domain.Employee">
+		   <![CDATA[ /* MultiDetail.retrieveEmployeeList */ ]]>
+		   SELECT emp.num,
+		       emp.name,
+		       emp.birthdate,
+		       emp.ssn,
+		       emp.sex,
+		       emp.telephone,
+		       emp.address,
+		       emp.postal,
+		       emp.skill_code,
+		       emp.joblevel_code,
+		       emp.department_code,
+		       emp.atch_file_bunch_no,
+		       emp.atch_file_bunch_no2,
+		       job.name as job,
+		       org.name as department,
+		       skill.name as skill,
+	       	   elap_id
+		   FROM UIP_EMPLOYEE emp
+		       LEFT JOIN UIP_JOBLEVEL job    ON (emp.joblevel_code = job.code)
+		       LEFT JOIN UIP_DEPARTMENT org ON (emp.department_code = org.code)
+		       LEFT JOIN UIP_SKILL skill     ON (emp.skill_code = skill.code)
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="and" property="joblevelCode">
+				emp.joblevel_code = #joblevelCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="departmentCode">
+				emp.department_code = #departmentCode#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="skillCode">
+				emp.skill_code = #skillCode#
+			</isNotEmpty>
+		</dynamic>
+	       order by 1
+	  </select>
+</sqlMap>

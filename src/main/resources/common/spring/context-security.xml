@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:security="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="
+                http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- HTTP security configurations 인증/인가 관련 세팅 -->
+    <security:http>
+		<!-- 보안예외사항등록 시작 -->
+	    <security:intercept-url pattern="/favicon.ico" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 파비콘 : 보안확인없음 -->
+	    <security:intercept-url pattern="/*.htm" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 초기화면 : 보안확인없음 -->
+	    <security:intercept-url pattern="/*.html" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 초기화면 : 보안확인없음 -->
+	    <security:intercept-url pattern="/*.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 초기화면 : 보안확인없음 -->
+	    <security:intercept-url pattern="/backbonejs/common/css/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- css : 보안확인없음 -->
+	    <security:intercept-url pattern="/backbonejs/common/js/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 자바스크립트 : 보안확인없음 -->
+	    <security:intercept-url pattern="/common/error/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- error페이지 : 보안확인없음 -->
+	    <security:intercept-url pattern="/tz/common/login/existUserId.ajax" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 사용자 ID 유무체크 : 보안확인없음 -->
+	    <security:intercept-url pattern="/tz/common/login/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- Site 초기화면 : 보안확인없음 -->
+	    <security:intercept-url pattern="/tz/common/message/get*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 메시지 : 보안확인없음 -->
+	    <!-- 보안예외사항등록 종료 -->    
+    
+	    <security:intercept-url pattern="/common/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- error페이지 : 보안확인없음 -->
+    
+		<custom-filter ref="autoLoginProcessingFilter" after="FIRST"/>
+		<!-- 자동로긴처리 : 개발자PC만 사용할것 -->
+
+        <!-- 인증 위한 login 처리 화면 설정 -->
+        <form-login authentication-success-handler-ref="successHandler" authentication-failure-handler-ref="failureHandler"
+        			login-page="/jsp/common/Login.jsp"/>
+        <!-- logout url 설정 -->
+         <logout logout-url="/j_spring_security_checkout" invalidate-session="true" success-handler-ref="logoutSuccessHandler" />
+    </security:http>
+
+   <!-- 로그아웃 이후 처리해야하는 작업들을 정의한다. -->
+	<beans:bean id="logoutSuccessHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+	    <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
+	</beans:bean>
+
+    <!-- 인증관리 빈정의 -->
+    <security:authentication-manager alias="authenticationManager">
+        <security:authentication-provider user-service-ref="authService">
+            <password-encoder ref="tzPasswordEncoder"/><!-- 비밀번호 암호화 처리 빈 -->
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!-- 인증처리 빈 정의 -->
+    <beans:bean id="authService" class="tz.extend.iam.authentication.UserDefinedAuthentication" />
+
+    <!-- 비밀번호 암호화 처리 빈 -->
+    <beans:bean id="tzPasswordEncoder" class="tz.extend.security.TzPasswordEncoder"/>
+
+	<!-- 인증성공시 처리해야 하는 작업들을 정의한다. -->
+	<beans:bean id="successHandler" class="tz.extend.iam.handler.AuthenSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/backbonejs/jsp/movies/moviesList.jsp" /><!-- 인증성공시 전환되는 페이지 정의 -->
+		<beans:property name="alwaysUseDefaultTargetUrl" value="true" /><!-- true : 무조건 defaultTargetUrl,false : 입력한 페이지 url -->
+	</beans:bean>
+
+	<!-- 로그인 사용자의 추가 정보 처리를 위한 빈 정의 -->
+	<beans:bean id="addUserService" class="tz.common.security.service.AddUserInfoServiceImpl" />
+
+	<!-- 인증실패시 처리해야 하는 작업들을 정의한다. -->
+	<beans:bean id="failureHandler" class="tz.extend.iam.handler.AuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/jsp/common/Login.jsp?error=1" />
+	</beans:bean>
+
+	<!-- 자동로그인 설정 -->
+	<beans:bean id="autoLoginProcessingFilter" class="tz.extend.iam.filter.AutoLoginFilter" depends-on="constants">
+		<beans:property name="username" value="${tz.tempUser.userId}" />
+		<beans:property name="password" value="${tz.tempUser.password}" />
+	</beans:bean>
+
+</beans:beans>

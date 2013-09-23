@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MasterDetail">
+
+	<insert id="insertAchievement" parameterClass="com.tz.sy.template.pt41.domain.Achieve">
+    <![CDATA[ /* MasterDetail.insertAchievement */ ]]>
+		INSERT INTO UIP_ACHIEVEMENT
+		(
+            num,
+            yyyy,
+            mm,
+            value,
+            etc
+        )
+        VALUES
+        (
+            #num#,
+            #yyyy#,
+            #mm#,
+            #value#,
+            #etc#
+        )
+	</insert>
+
+    <update id="updateAchievement" parameterClass="com.tz.sy.template.pt41.domain.Achieve">
+        <![CDATA[ /* MasterDetail.updateAchievement */ ]]>
+		UPDATE UIP_ACHIEVEMENT
+		   SET VALUE = #value#,
+               ETC   = #etc#
+        WHERE num   = #num#
+        AND   yyyy  = #yyyy#
+        AND   mm = #mm#
+    </update>
+
+    <delete id="deleteAchievement" parameterClass="com.tz.sy.template.pt41.domain.Achieve">
+        <![CDATA[ /* MasterDetail.deleteAchievement */ ]]>
+        DELETE FROM UIP_ACHIEVEMENT
+        WHERE  num = #num#
+        <dynamic prepend="AND">
+        	<isNotEmpty prepend="AND" property="yyyy">
+        		yyyy = #yyyy#
+        	</isNotEmpty>
+        	<isNotEmpty prepend="AND" property="mm">
+        		mm = #mm#
+        	</isNotEmpty>
+        </dynamic>
+    </delete>
+
+    <select id="retrieveRecentAchievement" parameterClass="map" resultClass="com.tz.sy.template.pt41.domain.Achieve">
+    	<![CDATA[ /* MasterDetail.retrieveRecentAchievement */ ]]>
+        SELECT  emp.num
+               ,achive.yyyy
+               ,achive.mm
+               ,achive.value
+               ,achive.etc
+          FROM  UIP_EMPLOYEE emp
+          JOIN  UIP_ACHIEVEMENT achive ON emp.num = achive.num
+         WHERE  emp.num = #num#
+		<dynamic prepend="AND">
+        	<isNotEmpty prepend="AND" property="yyyy">
+        		achive.yyyy = #yyyy#
+        	</isNotEmpty>
+        	<isNotEmpty prepend="AND" property="mm">
+        		achive.mm = #mm#
+        	</isNotEmpty>
+        </dynamic>
+    </select>
+
+</sqlMap>

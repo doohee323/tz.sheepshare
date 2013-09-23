@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<!--************************************************************************************
+* 프로그램 : locale
+* 설    명 :
+* 작 성 자 :
+* 작성일자 :
+* SQL 목록
+***************************************************************************************
+* SQLID                 설명
+***************************************************************************************
+* retrieveLocaleList 로케일 1 조회
+*************************************************************************************-->
+<sqlMap namespace="locale">
+
+	<resultMap class="java.util.Map" id="rmLocaleList">
+	   <result property="loclCd" column="locl_cd"/>
+	   <result property="natCd" column="nat_cd"/>
+	   <result property="currCd" column="curr_cd"/>
+	   <result property="loclNm" column="locl_nm"/>
+	   <result property="arrayOrd" column="array_ord"/>
+	   <result property="timebd" column="timebd"/>
+	   <result property="lenUnt" column="len_unt"/>
+	   <result property="wgtUnt" column="wgt_unt"/>
+	   <result property="loclExpl" column="locl_expl"/>
+	   <result property="useYn" column="use_yn"/>
+	</resultMap>
+
+    <!-- 로케일 조회 -->
+    <select id="retrieveLocaleList" parameterClass="map" resultMap="rmLocaleList" >
+        <![CDATA[ /* locale.retrieveLocaleList */ ]]>
+        SELECT LOCL_CD
+             , NAT_CD
+             , CURR_CD
+             , LOCL_NM
+             , ARRAY_ORD
+             , TIMEBD
+             , LEN_UNT
+             , WGT_UNT
+             , LOCL_EXPL
+             , USE_YN
+             , TO_CHAR(FST_REG_DT,'YYYY-MM-DD') AS FST_REG_DT
+             , FST_REG_USER_ID
+             , TO_CHAR(FNL_EDIT_DT, 'YYYY-MM-DD') AS FNL_EDIT_DT
+             , FNL_EDIT_USER_ID
+          FROM SY_LOCL
+         WHERE SYS_CD = #sysCd#
+		  <dynamic>
+	   	    <isNotEmpty prepend="AND" property="loclCd">
+               LOCL_CD = #loclCd#
+		    </isNotEmpty>
+		  </dynamic>
+         ORDER BY ARRAY_ORD
+    </select>
+	<!--  co MDM 단위 수정 -->
+	<update id="updateUserLocl" parameterClass="tz.common.locale.domain.LoclInfo">
+	<![CDATA[ /* locale.updateUserLocl */ ]]>
+     UPDATE SY_USER
+        SET LOCL_CD = #loclCd#
+      WHERE USER_ID = #userId#
+	</update>
+
+</sqlMap>

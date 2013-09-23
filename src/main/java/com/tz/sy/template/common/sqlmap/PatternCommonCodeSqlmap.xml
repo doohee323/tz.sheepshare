@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="PatternCommonCode">
+
+	<select id="retrieveJobLevelCodeList" parameterClass="java.util.HashMap" resultClass="java.util.LinkedHashMap">
+	    <![CDATA[ /* PatternCommonCode.retrieveJobLevelCodeList */ ]]>
+		SELECT  code
+               ,NAME value
+          FROM  UIP_JOBLEVEL
+	</select>
+
+	<statement id="retrieveDepartmentCodeList" parameterClass="java.util.HashMap" resultClass="java.util.LinkedHashMap">
+        <![CDATA[ /* PatternCommonCode.retrieveDepartmentCodeList */ ]]>
+        SELECT  '00001'||CODE as code
+               ,NAME value
+          FROM  UIP_DEPARTMENT
+         WHERE  DIV_CODE = '00001'
+	</statement>
+
+	<statement id="retrieveSkillCodeList" parameterClass="java.util.HashMap" resultClass="java.util.LinkedHashMap">
+        <![CDATA[ /* PatternCommonCode.retrieveSkillCodeList */ ]]>
+        SELECT  code
+               ,NAME value
+          FROM  UIP_SKILL
+	</statement>
+
+  <update id="updateSign" parameterClass="java.util.HashMap" >
+       UPDATE uip_employee SET elap_id = #elapId#
+       WHERE num = #num#
+  </update>
+
+  <update id="deleteEappr" parameterClass="java.util.HashMap" >
+       UPDATE uip_employee SET elap_id = ''
+       WHERE elap_id = #elapId#
+  </update>
+
+</sqlMap>
