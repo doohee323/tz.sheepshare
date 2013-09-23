@@ -1,0 +1,44 @@
+<div class="centers view">
+    <div class="container">
+        <header>
+            <h3>Center</h3>
+        </header>
+        <div class="row">
+            <div class="span3">
+                code:
+                <br />
+                <input data-ng-model="newCenter.code" type="text" placeholder="code">
+            </div>
+            <div class="span3">
+                name:
+                <br />
+                <input data-ng-model="newCenter.name" type="text" placeholder="name">
+            </div>
+            <div class="span3">
+                chief:
+                <br />
+                <input data-ng-model="newCenter.chief" type="text" placeholder="chief">
+            </div>
+            <div class="span3">
+                address:
+                <br />
+                <input data-ng-model="newCenter.address" type="text" placeholder="address">
+            </div>
+            <div class="span3">
+                phone:
+                <br />
+                <input data-ng-model="newCenter.phone" type="text" placeholder="phone">
+            </div>
+            <div class="span3">
+            	<input data-ng-model="newCenter.code" type="hidden">
+                <button id="addCenter" class="btn btn-primary" type="button" 
+                    data-ng-disabled="!newCenter.name || !newCenter.chief || !newCenter.address" 
+                    data-ng-click="addCenter()">Add Center</button>
+                <button id="saveCenter" class="btn btn-primary" type="button" 
+                    data-ng-click="saveCenter()">Save Center</button>
+                 <button id="listCenter" class="btn btn-primary" type="button" 
+                    data-ng-click="listCenter()">List Center</button>
+            </div>
+        </div>
+    </div>
+</div>

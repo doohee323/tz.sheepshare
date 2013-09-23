@@ -1,13 +1,19 @@
-'use strict';
+var app = angular.module('serverApp', []);
 
-angular.module('serverApp', [])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
-      })
-      .otherwise({
-        redirectTo: '/'
-      });
-  });
+app.config(function($routeProvider) {
+	$routeProvider.when('/centers', {
+		controller : 'CentersController',
+		templateUrl : './views/centers.html'
+	}).when('/center/:code', {
+		controller : 'CenterController',
+		templateUrl : './views/center.html'
+	}).when('/centerregions/:code', {
+		controller : 'CenterRegionsController',
+		templateUrl : './views/centerRegions.html'
+	}).when('/regions', {
+		controller : 'RegionsController',
+		templateUrl : './views/regions.html'
+	}).otherwise({
+		redirectTo : '/centers'
+	});
+});

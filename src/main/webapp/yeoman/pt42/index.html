@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-
+		<!-- dddddddddd start -->
 		<link href="http://www.bootply.com/bootstrap/3/bootstrap.css" rel="stylesheet">
 		<link href="http://glyphicons.getbootstrap.com/css/bootstrap-glyphicons.css" type="text/css" rel="stylesheet">
 		<link href="/common/lib/bootstrap/bootstrap.min.css" rel="stylesheet" />
@@ -20,11 +20,13 @@
 		
 		<!-- Fav and touch icons -->
 		<link rel="shortcut icon" 	href="/backbonejs/common/ico/favicon.png">
+		<!-- dddddddddd end -->
 
         <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/main.scss">
         <!-- endbuild -->
         
+        <!-- dddddddddd start -->
         <style type="text/css" id="bsCss">
         /* override bootstrap styles */
               /* Sticky footer styles
@@ -66,7 +68,8 @@
       	float: left;
       }
 </style>
-        
+<!-- dddddddddd end -->
+
 </head>
   <body ng-app="serverApp">
     <!--[if lt IE 7]>
@@ -78,6 +81,7 @@
       <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
+<!-- dddddddddd start -->
 <!-- BOOTSTRAP 3.x LAYOUT -->
 <div id="wrap">
     <div class="navbar navbar-inverse navbar-static-top">
@@ -114,7 +118,7 @@
     </div>
 
     <!-- Add your site or application content here -->
-    <div class="container" ng-view=""></div>
+    <div class="container" animated-view=""></div>
     
     <div id="footer">
         <div class="navbar navbar-fixed-bottom">
@@ -137,6 +141,7 @@
             </div>
         </div>
     </div>
+	<!-- dddddddddd end -->
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -176,11 +181,16 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+	    <script src="scripts/services/transaction.js"></script>
+
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/myController.js"></script>
+        <script src="scripts/controllers/centersControllers.js"></script>
         <script src="scripts/directives/myDirective.js"></script>
+	    <script src="scripts/directives/animatedView.js"></script>
         <script src="scripts/filters/myFilter.js"></script>
-        <script src="scripts/services/myService.js"></script>
+        <script src="scripts/services/centersService.js"></script>
+        
+<!-- 	    <script src="./app.js"></script> -->
         <!-- endbuild -->
 </body>
 </html>
