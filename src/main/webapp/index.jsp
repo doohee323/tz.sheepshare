@@ -6,7 +6,7 @@
 </head>
 <body>
 <script type="text/javascript">
-	window.location = 'angularjs/app/index.html'
+	window.location = 'index.html'
 </script>
 </body>
 </html> 
