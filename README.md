@@ -1,8 +1,6 @@
 tz.sheepshare
 =============
 
-# tz.sheepshare
-
 ## Objective
 
 mobile web app. for sheepshare which is auto file download android app.
