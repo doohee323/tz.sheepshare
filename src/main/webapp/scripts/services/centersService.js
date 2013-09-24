@@ -1,3 +1,4 @@
+'use strict';
 app.service('centersService', function($http, $location) {
 
 	var $scope = {};
@@ -84,9 +85,9 @@ app.service('centersService', function($http, $location) {
 					$scope.centers[i].chief = chief;
 					$scope.centers[i].address = address;
 					$scope.centers[i].phone = phone;
+					$scope.newCenter = $scope.centers[i];
 					
 					$scope.dataset.centers[i] = angular.copy($scope.centers[i]);
-					debugger;
 					$scope.dataset.centers[i].rowStatus = 'UPDATE';
 					chkExist = true;
 					break;
@@ -102,10 +103,12 @@ app.service('centersService', function($http, $location) {
 				address : address,
 				phone : phone
 			});
-			var nlength = $scope.centers.length;
-			$scope.dataset.centers.push($scope.dataset.centers[nlength]);
+			var nlength = $scope.centers.length - 1;
+			$scope.dataset.centers.push($scope.centers[nlength]);
 			$scope.dataset.centers[nlength].rowStatus = 'INSERT';
+			$scope.newCenter = $scope.centers[nlength];
 		}
+		$scope.$apply();
 		return $scope;
 	};
 

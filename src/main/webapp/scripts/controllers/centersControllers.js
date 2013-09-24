@@ -1,5 +1,5 @@
+'use strict';
 app.controller('CentersController', function($scope, $http, centersService) {
-
 	init();
 
 	function init() {

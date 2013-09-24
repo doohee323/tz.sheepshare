@@ -1,3 +1,4 @@
+'use strict';
 var transManager = {};
 transManager.exec = function(url, params, callback, $http) {
 
