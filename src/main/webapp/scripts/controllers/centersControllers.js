@@ -4,10 +4,10 @@ app.controller('CentersController', function($scope, $http, centersService) {
 
 	function init() {
 		centersService.init($scope);
-		centersService.retrieveCenters(function (data) {
+		centersService.retrieveCenters(function(data) {
 			$scope.centers = data;
 		});
-		
+
 		$scope.$watch('centers', function(newValue, oldValue) {
 			if (newValue === newValue) {
 				// alert(1);
@@ -24,7 +24,7 @@ app.controller('CentersController', function($scope, $http, centersService) {
 	$scope.deleteCenter = function(code) {
 		centersService.deleteCenter(code);
 	};
-	
+
 	$scope.saveCenter = function() {
 		centersService.saveCenter();
 	};
@@ -98,7 +98,7 @@ app.controller('RegionChildController', function($scope, centersService) {
 	init();
 
 	function init() {
-		centersService.retrieveRegions($scope, function (data) {
+		centersService.retrieveRegions($scope, function(data) {
 			$scope.center.regions = data;
 			if ($scope.center && $scope.center.regions) {
 				$scope.regionsTotal = $scope.center.regions.length;
@@ -131,4 +131,3 @@ var addCenter = function($scope, centersService, cu) {
 		$scope.newCenter.phone = '';
 	}
 };
-

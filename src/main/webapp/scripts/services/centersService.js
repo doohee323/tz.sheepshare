@@ -29,64 +29,67 @@ app.service('centersService', function($http, $location) {
 				centerCode : code
 			}
 		}, function(data) {
-			for ( var i = 0; i < $scope.dataset.centers.length; i++) {
-				if ($scope.dataset.centers[i].code == (code + '')) {
-					$scope.dataset.regions = angular.copy(data.output1);
+			if ($scope.dataset) {
+				for (var i = 0; i < $scope.dataset.centers.length; i++) {
+					if ($scope.dataset.centers[i].code == (code + '')) {
+						$scope.dataset.regions = angular.copy(data.output1);
+					}
 				}
 			}
-			
+
 			if (callback)
 				callback(data.output1);
 		}, $http).retrieve();
 	};
 
 	centersService.saveCenter = function(callback) {
-		debugger;
 		var params = {};
 		var centers = angular.copy($scope.dataset.centers);
 		var regions = angular.copy($scope.dataset.regions);
-		
-		if(centers && centers.length > 0) {
-			for ( var i = centers.length - 1; i >= 0; i--) {
+
+		if (centers && centers.length > 0) {
+			for (var i = centers.length - 1; i >= 0; i--) {
 				if (!centers[i].rowStatus || centers[i].rowStatus == 'NORMAL') {
 					centers.splice(i, 1);
 				}
 			}
-		} 
-		if(regions && regions.length > 0) {
-			for ( var i = centers.length - 1; i >= 0; i--) {
+		}
+		if (regions && regions.length > 0) {
+			for (var i = centers.length - 1; i >= 0; i--) {
 				if (!regions[i].rowStatus || regions[i].rowStatus == 'NORMAL') {
 					regions.splice(i, 1);
 				}
 			}
 		}
-		
+
 		params.centers = centers;
 		params.regions = regions;
-		
+
 		transManager.exec(baseUrl + '/saveCenterRegion.ajax', params, function(data) {
 			if (callback)
 				callback(data.output1);
 			$scope.dataset.centers = angular.copy($scope.centers);
-			// alert(data.output1[0].ErrorCode + "/" + data.output1[0].ErrorMsg);
+			// alert(data.output1[0].ErrorCode + "/" +
+			// data.output1[0].ErrorMsg);
 		}, $http).save();
 	};
 
 	centersService.getCenters = function() {
 		return $scope.centers;
 	};
-	
+
 	centersService.addCenter = function(code, name, chief, address, phone) {
+		debugger;
 		var chkExist = false;
 		if (code) {
-			for ( var i = 0; i < $scope.centers.length; i++) {
+			for (var i = 0; i < $scope.centers.length; i++) {
 				if ($scope.centers[i].code == (code + '')) {
 					$scope.centers[i].name = name;
 					$scope.centers[i].chief = chief;
 					$scope.centers[i].address = address;
 					$scope.centers[i].phone = phone;
 					$scope.newCenter = $scope.centers[i];
-					
+
 					$scope.dataset.centers[i] = angular.copy($scope.centers[i]);
 					$scope.dataset.centers[i].rowStatus = 'UPDATE';
 					chkExist = true;
@@ -114,7 +117,7 @@ app.service('centersService', function($http, $location) {
 
 	centersService.deleteCenter = function(code) {
 		var centers = $scope.centers;
-		for ( var i = centers.length - 1; i >= 0; i--) {
+		for (var i = centers.length - 1; i >= 0; i--) {
 			if (centers[i].code == (code + '')) {
 				$scope.dataset.centers[i].rowStatus = 'DELETE';
 				centers.splice(i, 1);
@@ -122,7 +125,7 @@ app.service('centersService', function($http, $location) {
 			}
 		}
 		var regions = $scope.regions;
-		for ( var i = regions.length - 1; i >= 0; i--) {
+		for (var i = regions.length - 1; i >= 0; i--) {
 			if (regions[i].code == (code + '')) {
 				$scope.dataset.regions[i].rowStatus = 'DELETE';
 				break;
@@ -139,7 +142,7 @@ app.service('centersService', function($http, $location) {
 			return;
 		}
 
-		for ( var i = 0; i < centers.length; i++) {
+		for (var i = 0; i < centers.length; i++) {
 			if (centers[i].code == (code + '')) {
 				centers[i].rowStatus = 'NORMAL';
 				return centers[i];

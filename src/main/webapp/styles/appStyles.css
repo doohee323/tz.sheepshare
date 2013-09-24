@@ -50,7 +50,7 @@ body {
     margin-left:20px;
 }
 
-.orders th, .employeeOrders th {
+.orders th, .centerOrders th {
     width:25%;
     cursor: pointer;
 }
@@ -61,11 +61,10 @@ body {
     font-weight: bold;
 }
 
-
-#addEmployee {
-    margin-left:50px;
-    margin-top: -8px;
-}
+/* #addCenter { */
+/*     margin-left:50px; */
+/*     margin-top: -8px; */
+/* } */
 
 footer {
     margin-top:10px;

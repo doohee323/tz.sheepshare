@@ -1,22 +1,24 @@
 'use strict';
 
-//<contentitem content="Center"/>
+// <commbutton data="Center"/>
 
-app.directive("contentitem", function($compile) {
-	var getTemplate = function(aType) {
-		var template = '<button id="add' + aType + '" class="btn btn-primary" type="button"'
-		 +' data-ng-disabled="!new'+ aType +'.name || !new'+ aType +'.chief ||'
-		 +'!new'+ aType +'.address"'
-		+ '    >Add ' + aType + '</button>';
+app.directive("commbutton", function($compile) {
+	var getTemplate = function(aType, aData) {
+		var template = '<button id="' + aType + aData + '" class="btn btn-primary" type="button"';
+		if (aType == 'add') {
+			template += ' data-ng-disabled="!new' + aData + '.name || !new' + aData + '.chief || !new' + aData
+					+ '.address"';
+		}
+		template += '>' + aType + ' ' + aData + '</button>';
 		return template;
 	};
 
 	var linker = function(scope, element, attr) {
-		element.html(getTemplate(attr["content"])).show();
+		element.html(getTemplate(attr["type"], attr["data"])).show();
 		element.bind('click', function() {
-			eval('scope.add' + attr["content"] + '()');
+			eval('scope.' + attr["type"] + attr["data"] + '()');
+			return;
 		});
-
 		$compile(element.contents())(scope);
 	};
 

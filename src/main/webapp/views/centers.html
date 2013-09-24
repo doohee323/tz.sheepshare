@@ -31,13 +31,8 @@
             </div>
             <div class="span3">
             	<input data-ng-model="newCenter.code" type="hidden">
-<!--                 <button id="addCenter" class="btn btn-primary" type="button"  -->
-<!--                     data-ng-disabled="!newCenter.name || !newCenter.chief || !newCenter.address"  -->
-<!--                     data-ng-click="addCenter()">Add Center</button> -->
-				<contentitem content="Center"/>
-
-                <button id="saveCenter" class="btn btn-primary" type="button" 
-                    data-ng-click="saveCenter()">Save Center</button>
+				<commbutton type="add" data="Center"//>
+				<commbutton type="save" data="Center"//>
             </div>
         </div>
         <br /><br />
