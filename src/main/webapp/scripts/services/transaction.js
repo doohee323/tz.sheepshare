@@ -1,38 +1,74 @@
 'use strict';
+
+function JSON_CALLBACK (data) {
+	debugger;
+}
 var transManager = {};
-transManager.exec = function(url, type, params, callback, $http, $templateCache) {
+transManager.exec = function(url, type, params, callback, $http, $httpBackend, $templateCache) {
 
 	transManager.retrieve = function() {
 
 		var config = {
 			headers : {
-				'Access-Control-Allow-Origin' : 'http://192.168.219.112:3000',
-				'Access-Control-Allow-Credentials' : 'true'
+				'Accept' : 'application/json',
+				'Content-type': 'application/json',
+				'X-Requested-With' : 'XMLHttpRequest',
+				'Access-Control-Allow-Origin' : 'http://local.tz.com:7001'
+//				'Access-Control-Allow-Credentials' : 'false'
 			}
 		};
 
 		debugger;
 
-		 $.ajax({
-	            type: 'GET',
-	            url: url,
-	            contentType: 'application/json; charset=utf-8',
-	            crossDomain: true,
-	            dataType: 'jsonp',
-	            success: function(data){
-	            	debugger;
-	            },
-	            error : function(xhr, ajaxOptions, thrownError) {
-	            	debugger;
-	            }
-	        });
+		url += '?callback=JSON_CALLBACK'; 
+		
+//		 $.ajax({
+//	            type: 'GET',
+//	            url: url,
+//	            contentType: 'application/json; charset=utf-8',
+//	            crossDomain: true,
+//	            dataType: 'jsonp',
+//	            success: function(data){
+//	            	debugger;
+//	            },
+//	            error : function(xhr, ajaxOptions, thrownError) {
+//	            	debugger;
+//	            }
+//	        });
+		
+		$http.jsonp(url).success(function(data, status, headers, config) {
+			debugger;
+			callback(data);
+		}).error(function(data, status, headers, config) {
+			debugger;
+			data = status;
+			callback(data);
+		});
+		
+		function JSON_CALLBACK(data) {
+			debugger;
+		}
 		
 //		$http({
 //			method: 'JSONP',
 //			url: url,
 //		    headers: {
-//				'Access-Control-Allow-Origin' : 'http://192.168.219.112:3000',
-//				'Access-Control-Allow-Credentials' : 'true',
+//				'Content-Type': 'application/json',
+//				'Accept': 'application/json'
+//		    }
+//		}).success(function(data, status, headers, config) {
+//			debugger;
+//				callback(data);
+//			}).error(function(data, status, headers, config) {
+//				debugger;
+//				data = status;
+//				callback(data);
+//			});
+		
+//		$http({
+//			method: 'JSONP',
+//			url: url,
+//		    headers: {
 //				'Content-Type': 'application/json',
 //				'Accept': 'application/json'
 //		    }
@@ -47,15 +83,19 @@ transManager.exec = function(url, type, params, callback, $http, $templateCache)
 		
 //		if(type == 'get') {
 //			$http.get(url, config).success(function(data, status, headers, config) {
+//				debugger;
 //				callback(data);
 //			}).error(function(data, status) {
+//				debugger;
 //				data = status;
 //				callback(data);
 //			});
 //		} else {
 //			$http.post(url, JSON.stringify(params), config).success(function(data, status, headers, config) {
+//				debugger;
 //				callback(data);
 //			}).error(function(data, status) {
+//				debugger;
 //				data = status;
 //				callback(data);
 //			});
