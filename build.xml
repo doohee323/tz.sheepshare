@@ -10,7 +10,7 @@
     <property name='src.resources.common'    value='src/main/resources/common' />
     <property name='src.resources.local'     value='src/main/resources/local' />
     <property name='src.deploy.overwrite'    value='src/deploy' />
-    <property name='src.dir.web'             value='src/main/webapp' />
+    <property name='src.dir.web'             value='src/main/app' />
 	<property name="src.lib.dir" 			 value="${src.dir.web}/WEB-INF/lib" />
 	
     <property name='build.dir'               value='${war.dir}/${app.name}' />
