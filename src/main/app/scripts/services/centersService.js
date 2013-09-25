@@ -3,14 +3,16 @@ app.service('centersService', function($http, $location) {
 
 	var $scope = {};
 	var centersService = {};
-	var baseUrl = 'http://192.168.219.112:3000';
+//	var baseUrl = 'http://192.168.219.112:3000';
+	var baseUrl = '/pattern/pt42/masterdetail';
 
 	centersService.init = function(scope) {
 		$scope = scope;
 	};
 
 	centersService.retrieveCenters = function(callback) {
-		transManager.exec(baseUrl + '/uip_centers.json', 'get', {
+//		transManager.exec(baseUrl + '/uip_centers.json', 'get', {
+			transManager.exec(baseUrl + '/retrieveCenterList.ajax', 'post', {
 			params : {
 				code : ''
 			}
@@ -24,7 +26,7 @@ app.service('centersService', function($http, $location) {
 
 	centersService.retrieveRegions = function($scope, callback) {
 		var code = $scope.center.code;
-		transManager.exec(baseUrl + '/retrieveRegionList.ajax', 'get', {
+		transManager.exec(baseUrl + '/retrieveRegionList.ajax', 'post', {
 			params : {
 				centerCode : code
 			}
