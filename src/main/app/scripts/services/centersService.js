@@ -3,44 +3,58 @@ app.service('centersService', function($http, $location) {
 
 	var $scope = {};
 	var centersService = {};
-//	var baseUrl = 'http://192.168.219.112:3000';
-	var baseUrl = '/pattern/pt42/masterdetail';
+	var baseUrl = 'http://192.168.219.112:3000';
+	if(appConf.serverSide == 'spring') {
+		baseUrl = '/pattern/pt42/masterdetail';
+	}
 
 	centersService.init = function(scope) {
 		$scope = scope;
 	};
 
 	centersService.retrieveCenters = function(callback) {
-//		transManager.exec(baseUrl + '/uip_centers.json', 'get', {
-			transManager.exec(baseUrl + '/retrieveCenterList.ajax', 'post', {
+		var url = '/uip_centers.json';
+		var type = 'get';
+		if(appConf.serverSide == 'spring') {
+			url = '/retrieveCenterList.ajax';
+			type = 'post';
+		}
+		transManager.exec(baseUrl + url, type, {
 			params : {
 				code : ''
 			}
 		}, function(data) {
 			$scope.dataset = {};
-			$scope.dataset.centers = angular.copy(data.output1);
+			if(appConf.serverSide == 'spring') data = data.output1;
+			$scope.dataset.centers = angular.copy(data);
 			if (callback)
-				callback(data.output1);
+				callback(data);
 		}, $http).retrieve();
 	};
 
 	centersService.retrieveRegions = function($scope, callback) {
+		var url = '/uip_regions.json';
+		var type = 'get';
+		if(appConf.serverSide == 'spring') {
+			url = '/retrieveRegionList.ajax';
+			type = 'post';
+		}
 		var code = $scope.center.code;
-		transManager.exec(baseUrl + '/retrieveRegionList.ajax', 'post', {
+		transManager.exec(baseUrl + url, type, {
 			params : {
 				centerCode : code
 			}
 		}, function(data) {
+			if(appConf.serverSide == 'spring') data = data.output1;
 			if ($scope.dataset) {
 				for (var i = 0; i < $scope.dataset.centers.length; i++) {
 					if ($scope.dataset.centers[i].code == (code + '')) {
-						$scope.dataset.regions = angular.copy(data.output1);
+						$scope.dataset.regions = angular.copy(data);
 					}
 				}
 			}
-
 			if (callback)
-				callback(data.output1);
+				callback(data);
 		}, $http).retrieve();
 	};
 
@@ -63,16 +77,21 @@ app.service('centersService', function($http, $location) {
 				}
 			}
 		}
-
-		params.centers = centers;
+		params.uip_center = centers;
 		params.regions = regions;
 
-		transManager.exec(baseUrl + '/saveCenterRegion.ajax', 'post', params, function(data) {
+		var url = '/uip_centers/11.json';
+		var type = 'PATCH';
+		if(appConf.serverSide == 'spring') {
+			url = '/saveCenterRegion.ajax';
+			type = 'post';
+		}
+		
+		transManager.exec(baseUrl + url, type, params, function(data) {
+			if(appConf.serverSide == 'spring') data = data.output1;
 			if (callback)
-				callback(data.output1);
+				callback(data);
 			$scope.dataset.centers = angular.copy($scope.centers);
-			// alert(data.output1[0].ErrorCode + "/" +
-			// data.output1[0].ErrorMsg);
 		}, $http).save();
 	};
 
@@ -81,7 +100,6 @@ app.service('centersService', function($http, $location) {
 	};
 
 	centersService.addCenter = function(code, name, chief, address, phone) {
-		debugger;
 		var chkExist = false;
 		if (code) {
 			for (var i = 0; i < $scope.centers.length; i++) {

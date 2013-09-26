@@ -1,5 +1,9 @@
 var app = angular.module('serverApp', []);
 
+var appConf = {
+		serverSide : 'rails' // spring, rails
+};
+
 app.config(function($routeProvider) {
 	$routeProvider.when('/centers', {
 		controller : 'CentersController',
@@ -17,3 +21,4 @@ app.config(function($routeProvider) {
 		redirectTo : '/centers'
 	});
 });
+
