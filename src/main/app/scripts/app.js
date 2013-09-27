@@ -1,11 +1,11 @@
 var app = angular.module('serverApp', []);
 
-app.constant('config', {
+var config = {
 	// url : 'http://localhost:3000/'
-	// url : 'http://192.168.219.112:3000/',
-	url : '/pattern/pt42/masterdetail',
-	server : 'spring' // spring, rails
-});
+	 url : 'http://192.168.219.112:3000/',
+//	url : '/pattern/pt42/masterdetail',
+	server : 'rails' // spring, rails
+};
 
 app.config(function($routeProvider) {
 	$routeProvider.when('/centers', {
