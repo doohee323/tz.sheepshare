@@ -101,7 +101,6 @@ function addCenter($scope, centersService, cu) {
 	var chief = $scope.newCenter.chief;
 	var address = $scope.newCenter.address;
 	var phone = $scope.newCenter.phone;
-	debugger;
 	centersService.addCenter(code, name, chief, address, phone);
 
 	if (cu == '') {

@@ -71,11 +71,25 @@ app.service('centersService', function() {
 		params = this.setParam($rootScope.centers, params, 'uip_center');
 		params = this.setParam($rootScope.regions, params, 'uip_region');
 
-		var url = '/uip_centers/11.json';
-		var type = 'PATCH';
+		var url;
+		var type;
 		if (config.server == 'spring') {
 			url = '/saveCenterRegion.ajax';
 			type = 'post';
+		} else {
+			// 복수건 처리 이슈
+			params = params.uip_center[0];
+			if(params.rowStatus == 'INSERT') {
+				type = 'POST';
+				url = '/uip_centers.json';
+			} else {
+				url = '/uip_centers/' + params.id + '.json';
+				if(params.rowStatus == 'UPDATE') {
+					type = 'PATCH';
+				} else {
+					type = 'DELETE';
+				}
+			}
 		}
 		transManager.save(config.url + url, type, params, function(data) {
 			if (config.server == 'spring')
