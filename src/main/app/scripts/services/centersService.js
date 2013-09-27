@@ -1,167 +1,146 @@
 'use strict';
-app.service('centersService', function($http, $location) {
+app.service('centersService', function() {
 
-	var $scope = {};
-	var centersService = {};
-	var baseUrl = 'http://192.168.219.112:3000';
-	if(appConf.serverSide == 'spring') {
-		baseUrl = '/pattern/pt42/masterdetail';
-	}
+	var transManager;
+	var $rootScope;
+	var $scope;
+	var $http;
+	var $location;
 
-	centersService.init = function(scope) {
-		$scope = scope;
+	/**
+	 * @param _transManager,
+	 *            _$scope, _$http, _$location
+	 * @desc 변수 초기화
+	 */
+	this.init = function(_$rootScope) {
+		$rootScope = _$rootScope;
+		$scope = $rootScope.$$childTail;
+		$http = $rootScope.$http;
+		$location = $rootScope.$location;
+		transManager = $rootScope.transManager;
+		transManager.init($http);
 	};
 
-	centersService.retrieveCenters = function(callback) {
+	this.retrieveCenters = function(callback) {
 		var url = '/uip_centers.json';
 		var type = 'get';
-		if(appConf.serverSide == 'spring') {
+		if (config.server == 'spring') {
 			url = '/retrieveCenterList.ajax';
 			type = 'post';
 		}
-		transManager.exec(baseUrl + url, type, {
+		transManager.retrieve(config.url + url, type, {
 			params : {
 				code : ''
 			}
 		}, function(data) {
-			$scope.dataset = {};
-			if(appConf.serverSide == 'spring') data = data.output1;
-			$scope.dataset.centers = angular.copy(data);
+			if (config.server == 'spring')
+				data = data.output1;
+			$rootScope.centers = angular.copy(data);
 			if (callback)
 				callback(data);
-		}, $http).retrieve();
+		});
 	};
 
-	centersService.retrieveRegions = function($scope, callback) {
+	this.retrieveRegions = function(callback) {
 		var url = '/uip_regions.json';
 		var type = 'get';
-		if(appConf.serverSide == 'spring') {
+		if (config.server == 'spring') {
 			url = '/retrieveRegionList.ajax';
 			type = 'post';
 		}
 		var code = $scope.center.code;
-		transManager.exec(baseUrl + url, type, {
+		transManager.retrieve(config.url + url, type, {
 			params : {
-				centerCode : code
+				code : ''
 			}
 		}, function(data) {
-			if(appConf.serverSide == 'spring') data = data.output1;
-			if ($scope.dataset) {
-				for (var i = 0; i < $scope.dataset.centers.length; i++) {
-					if ($scope.dataset.centers[i].code == (code + '')) {
-						$scope.dataset.regions = angular.copy(data);
-					}
+			if (config.server == 'spring')
+				data = data.output1;
+			for (var i = 0; i < $rootScope.centers.length; i++) {
+				if ($rootScope.centers[i].code == (code + '')) {
+					$rootScope.regions = angular.copy(data);
 				}
 			}
 			if (callback)
 				callback(data);
-		}, $http).retrieve();
+		});
 	};
 
-	centersService.saveCenter = function(callback) {
+	this.saveCenter = function(callback) {
 		var params = {};
-		var centers = angular.copy($scope.dataset.centers);
-		var regions = angular.copy($scope.dataset.regions);
-
-		if (centers && centers.length > 0) {
-			for (var i = centers.length - 1; i >= 0; i--) {
-				if (!centers[i].rowStatus || centers[i].rowStatus == 'NORMAL') {
-					centers.splice(i, 1);
-				}
-			}
-		}
-		if (regions && regions.length > 0) {
-			for (var i = centers.length - 1; i >= 0; i--) {
-				if (!regions[i].rowStatus || regions[i].rowStatus == 'NORMAL') {
-					regions.splice(i, 1);
-				}
-			}
-		}
-		params.uip_center = centers;
-		params.regions = regions;
+		params = this.setParam($rootScope.centers, params, 'uip_center');
+		params = this.setParam($rootScope.regions, params, 'uip_region');
 
 		var url = '/uip_centers/11.json';
 		var type = 'PATCH';
-		if(appConf.serverSide == 'spring') {
+		if (config.server == 'spring') {
 			url = '/saveCenterRegion.ajax';
 			type = 'post';
 		}
-		
-		transManager.exec(baseUrl + url, type, params, function(data) {
-			if(appConf.serverSide == 'spring') data = data.output1;
+		transManager.save(config.url + url, type, params, function(data) {
+			if (config.server == 'spring')
+				data = data.output1;
 			if (callback)
 				callback(data);
-			$scope.dataset.centers = angular.copy($scope.centers);
-		}, $http).save();
+			$rootScope.centers = angular.copy($scope.centers);
+		});
 	};
 
-	centersService.getCenters = function() {
-		return $scope.centers;
-	};
-
-	centersService.addCenter = function(code, name, chief, address, phone) {
+	this.addCenter = function(code, name, chief, address, phone) {
 		var chkExist = false;
 		if (code) {
-			for (var i = 0; i < $scope.centers.length; i++) {
-				if ($scope.centers[i].code == (code + '')) {
-					$scope.centers[i].name = name;
-					$scope.centers[i].chief = chief;
-					$scope.centers[i].address = address;
-					$scope.centers[i].phone = phone;
-					$scope.newCenter = $scope.centers[i];
+			for (var i = 0; i < $rootScope.centers.length; i++) {
+				if ($rootScope.centers[i].code == (code + '')) {
+					$rootScope.centers[i].name = name;
+					$rootScope.centers[i].chief = chief;
+					$rootScope.centers[i].address = address;
+					$rootScope.centers[i].phone = phone;
+					$scope.newCenter = $rootScope.centers[i];
 
-					$scope.dataset.centers[i] = angular.copy($scope.centers[i]);
-					$scope.dataset.centers[i].rowStatus = 'UPDATE';
+					$rootScope.centers[i].rowStatus = 'UPDATE';
 					chkExist = true;
 					break;
 				}
 			}
 		}
 		if (!chkExist) {
-			var topID = $scope.centers.length + 1;
-			$scope.centers.push({
+			var topID = $rootScope.centers.length + 1;
+			$rootScope.centers.push({
 				code : topID,
 				name : name,
 				chief : chief,
 				address : address,
 				phone : phone
 			});
-			var nlength = $scope.centers.length - 1;
-			$scope.dataset.centers.push($scope.centers[nlength]);
-			$scope.dataset.centers[nlength].rowStatus = 'INSERT';
-			$scope.newCenter = $scope.centers[nlength];
+			var nlength = $rootScope.centers.length - 1;
+			$rootScope.centers[nlength].rowStatus = 'INSERT';
+			$scope.centers = angular.copy($rootScope.centers);
 		}
 		$scope.$apply();
 		return $scope;
 	};
 
-	centersService.deleteCenter = function(code) {
-		var centers = $scope.centers;
+	this.deleteCenter = function(code) {
+		var centers = $rootScope.centers;
 		for (var i = centers.length - 1; i >= 0; i--) {
 			if (centers[i].code == (code + '')) {
-				$scope.dataset.centers[i].rowStatus = 'DELETE';
-				centers.splice(i, 1);
+				$rootScope.centers[i].rowStatus = 'DELETE';
+				$scope.centers.splice(i, 1);
 				break;
 			}
 		}
-		var regions = $scope.regions;
+		var regions = $rootScope.regions;
 		for (var i = regions.length - 1; i >= 0; i--) {
 			if (regions[i].code == (code + '')) {
-				$scope.dataset.regions[i].rowStatus = 'DELETE';
+				$rootScope.regions[i].rowStatus = 'DELETE';
+				$scope.regions.splice(i, 1);
 				break;
 			}
 		}
 	};
 
-	centersService.getCenter = function(code) {
-		var centers = null;
-		try {
-			centers = $scope.centers;
-		} catch (e) {
-			$location.path("/centers");
-			return;
-		}
-
+	this.getCenter = function(code) {
+		var centers = $rootScope.centers;
 		for (var i = 0; i < centers.length; i++) {
 			if (centers[i].code == (code + '')) {
 				centers[i].rowStatus = 'NORMAL';
@@ -171,5 +150,18 @@ app.service('centersService', function($http, $location) {
 		return null;
 	};
 
-	return centersService;
+	this.setParam = function(source, target, obj) {
+		var datas = angular.copy(source);
+		if (datas && datas.length > 0) {
+			for (var i = datas.length - 1; i >= 0; i--) {
+				if (!datas[i].rowStatus || datas[i].rowStatus == 'NORMAL') {
+					datas.splice(i, 1);
+				}
+			}
+		}
+		if (Object.keys(datas).length > 0) {
+			target[obj] = datas;
+		}
+		return target;
+	};
 });

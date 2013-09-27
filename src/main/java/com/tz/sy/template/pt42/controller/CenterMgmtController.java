@@ -132,8 +132,8 @@ public class CenterMgmtController {
 	 */
 	@RequestMapping("saveCenterRegion.*")
 	public void saveCenterRegion(TzRequest request, TzResponse response) {
-		GridData<Center> centerList = request.getGridData("centers", Center.class);
-		GridData<Region> regionList = request.getGridData("regions", Region.class);
+		GridData<Center> centerList = request.getGridData("uip_center", Center.class);
+		GridData<Region> regionList = request.getGridData("uip_region", Region.class);
 
 		service.saveCenterRegion(centerList, regionList);
         response.setMap("output1", UxConstants.setMsg(true));

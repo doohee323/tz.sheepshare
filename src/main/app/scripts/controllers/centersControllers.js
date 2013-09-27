@@ -1,21 +1,28 @@
 'use strict';
-app.controller('CentersController', function($scope, $http, centersService) {
-	init();
 
-	function init() {
-		centersService.init($scope);
-		centersService.retrieveCenters(function(data) {
-			$scope.centers = data;
-		});
+app.controller('CentersController', function($rootScope, $scope, $http, $location, transManager, centersService) {
 
-		$scope.$watch('centers', function(newValue, oldValue) {
-			if (newValue === newValue) {
-				// alert(1);
-			} else {
-				// alert(-1);
-			}
-		}, true);
-	}
+	$rootScope.$http = $http;
+	$rootScope.$location = $location;
+
+	$rootScope.centers = {};
+	$rootScope.regions = {};
+	$rootScope.transManager = transManager;
+	$rootScope.centersService = centersService;
+
+	centersService.init($rootScope);
+	centersService.retrieveCenters(function(data) {
+		$scope.centers = data;
+		$rootScope.centers = angular.copy(data);
+	});
+
+	$scope.$watch('centers', function(newValue, oldValue) {
+		if (newValue === newValue) {
+			// alert(1);
+		} else {
+			// alert(-1);
+		}
+	}, true);
 
 	$scope.addCenter = function() {
 		addCenter($scope, centersService, 'C');
@@ -30,17 +37,11 @@ app.controller('CentersController', function($scope, $http, centersService) {
 	};
 });
 
-app.controller('CenterController', function($scope, $routeParams, $location, centersService) {
+app.controller('CenterController', function($rootScope, $scope, $location, $routeParams, transManager, centersService) {
+	centersService.init($rootScope);
+
 	$scope.newCenter = {};
-
-	init();
-
-	function init() {
-		var code = $routeParams.code;
-		if (code) {
-			$scope.newCenter = centersService.getCenter(code);
-		}
-	}
+	$scope.newCenter = centersService.getCenter($routeParams.code);
 
 	$scope.addCenter = function() {
 		addCenter($scope, centersService, 'U');
@@ -55,29 +56,11 @@ app.controller('CenterController', function($scope, $routeParams, $location, cen
 	};
 });
 
-app.controller('CenterRegionsController', function($scope, $routeParams, centersService) {
+app.controller('CenterRegionsController', function($scope, centersService) {
 	$scope.center = {};
 	$scope.regionsTotal = 0.00;
 
-	init();
-
-	function init() {
-		var code = $routeParams.code;
-		if (code) {
-			$scope.center = centersService.getCenter(code);
-		}
-	}
-
-});
-
-app.controller('RegionsController', function($scope, centersService) {
-	$scope.centers = [];
-
-	init();
-
-	function init() {
-		$scope.centers = centersService.getCenters();
-	}
+	$scope.center = centersService.getCenter($routeParams.code);
 });
 
 app.controller('NavbarController', function($scope, $location) {
@@ -90,21 +73,19 @@ app.controller('NavbarController', function($scope, $location) {
 	};
 });
 
-app.controller('RegionChildController', function($scope, centersService) {
+app.controller('RegionChildController', function($scope, $http, $location, transManager, centersService) {
+	centersService.init(transManager, $scope, $http, $location);
+
 	$scope.orderby = 'regionCode';
 	$scope.reverse = false;
 	$scope.regionsTotal = 0;
 
-	init();
-
-	function init() {
-		centersService.retrieveRegions($scope, function(data) {
-			$scope.center.regions = data;
-			if ($scope.center && $scope.center.regions) {
-				$scope.regionsTotal = $scope.center.regions.length;
-			}
-		});
-	}
+	centersService.retrieveRegions($scope, function(data) {
+		$scope.center.regions = data;
+		if ($scope.center && $scope.center.regions) {
+			$scope.regionsTotal = $scope.center.regions.length;
+		}
+	});
 
 	$scope.setOrder = function(orderby) {
 		if (orderby === $scope.orderby) {
@@ -112,15 +93,15 @@ app.controller('RegionChildController', function($scope, centersService) {
 		}
 		$scope.orderby = orderby;
 	};
-
 });
 
-var addCenter = function($scope, centersService, cu) {
+function addCenter($scope, centersService, cu) {
 	var code = $scope.newCenter.code;
 	var name = $scope.newCenter.name;
 	var chief = $scope.newCenter.chief;
 	var address = $scope.newCenter.address;
 	var phone = $scope.newCenter.phone;
+	debugger;
 	centersService.addCenter(code, name, chief, address, phone);
 
 	if (cu == '') {

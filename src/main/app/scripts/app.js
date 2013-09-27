@@ -1,7 +1,10 @@
 var app = angular.module('serverApp', []);
 
-var appConf = {
-		serverSide : 'rails' // spring, rails
+var config = {
+	// url : 'http://localhost:3000/'
+	// url : 'http://192.168.219.112:3000/',
+	url : '/pattern/pt42/masterdetail',
+	server : 'spring' // spring, rails
 };
 
 app.config(function($routeProvider) {
@@ -20,5 +23,7 @@ app.config(function($routeProvider) {
 	}).otherwise({
 		redirectTo : '/centers'
 	});
-});
-
+}).config([ '$httpProvider', function($httpProvider) {
+	$httpProvider.defaults.useXDomain = true;
+	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+} ]);

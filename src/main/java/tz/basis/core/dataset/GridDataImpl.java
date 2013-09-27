@@ -42,12 +42,12 @@ public class GridDataImpl<E> implements GridData<E> {
                 RowStatus rowStatus = dataSet.getRowStatus(i);
 
                 if(rowStatus == null){
-                    if(rowStatus == null){
-                        throw new RowStatusException("DS={" + dataSet.getId() + "}의 rowStatus가 누락 되었습니다.");
-                    }
+                    System.out.println("DS={" + dataSet.getId() + "}의 rowStatus가 누락 되었습니다.");
+                    this.rowStatusList.add(RowStatus.NORMAL);
+//                    throw new RowStatusException("DS={" + dataSet.getId() + "}의 rowStatus가 누락 되었습니다.");
+                } else {
+                    this.rowStatusList.add(dataSet.getRowStatus(i));
                 }
-
-                this.rowStatusList.add(dataSet.getRowStatus(i));
             }
         }
     }
