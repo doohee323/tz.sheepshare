@@ -1,12 +1,13 @@
 'use strict';
 
-app.controller('CentersController', function($rootScope, $scope, $http, $location, transManager, centersService) {
+app.controller('CentersController', function($rootScope, $scope, $http, $location, config, transManager, centersService) {
 
 	$rootScope.$http = $http;
 	$rootScope.$location = $location;
 
 	$rootScope.centers = {};
 	$rootScope.regions = {};
+	$rootScope.config = config;
 	$rootScope.transManager = transManager;
 	$rootScope.centersService = centersService;
 

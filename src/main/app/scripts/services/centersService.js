@@ -1,6 +1,7 @@
 'use strict';
 app.service('centersService', function() {
 
+	var config;
 	var transManager;
 	var $rootScope;
 	var $scope;
@@ -13,6 +14,7 @@ app.service('centersService', function() {
 	 * @desc 변수 초기화
 	 */
 	this.init = function(_$rootScope) {
+		config = _$rootScope.config;
 		$rootScope = _$rootScope;
 		$scope = $rootScope.$$childTail;
 		$http = $rootScope.$http;
