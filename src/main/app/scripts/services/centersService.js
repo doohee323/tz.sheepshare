@@ -9,8 +9,7 @@ app.service('centersService', function() {
 	var $location;
 
 	/**
-	 * @param _transManager,
-	 *            _$scope, _$http, _$location
+	 * @param _$rootScope
 	 * @desc 변수 초기화
 	 */
 	this.init = function(_$rootScope) {
@@ -115,6 +114,9 @@ app.service('centersService', function() {
 
 					$rootScope.centers[i].rowStatus = 'UPDATE';
 					chkExist = true;
+					var saveCenter = document.getElementById("saveCenter");
+					saveCenter.removeAttribute('disabled');
+					saveCenter.setAttribute('data-ng-disabled', 'false');
 					break;
 				}
 			}

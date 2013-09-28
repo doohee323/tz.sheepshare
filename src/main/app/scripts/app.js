@@ -7,7 +7,8 @@ var config = {
 	server : 'rails' // spring, rails
 };
 
-app.constant('config', config).config(function($routeProvider) {
+app.constant('config', config).
+	config(function($routeProvider) {
 	$routeProvider.when('/centers', {
 		controller : 'CentersController',
 		templateUrl : './views/centers.html'

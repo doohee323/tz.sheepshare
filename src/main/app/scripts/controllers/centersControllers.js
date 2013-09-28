@@ -1,15 +1,18 @@
 'use strict';
 
-app.controller('CentersController', function($rootScope, $scope, $http, $location, config, transManager, centersService) {
-
-	$rootScope.$http = $http;
-	$rootScope.$location = $location;
+app.controller('CentersController', function($rootScope, $scope, $http, $location, $routeParams, config, transManager, centersService) {
 
 	$rootScope.centers = {};
 	$rootScope.regions = {};
-	$rootScope.config = config;
-	$rootScope.transManager = transManager;
-	$rootScope.centersService = centersService;
+
+	var params = getParams(this.constructor);
+	if(!$rootScope.$http) {
+		for(var p in params) {
+			if(!angular.equals(params[p], "$rootScope")) {
+				$rootScope[params[p]] = eval(params[p]);
+			}
+		}
+	}
 
 	centersService.init($rootScope);
 	centersService.retrieveCenters(function(data) {
@@ -26,7 +29,7 @@ app.controller('CentersController', function($rootScope, $scope, $http, $locatio
 	}, true);
 
 	$scope.addCenter = function() {
-		addCenter($scope, centersService, 'C');
+		addCenter($scope, centersService, 'INSERT');
 	};
 
 	$scope.deleteCenter = function(code) {
@@ -38,14 +41,24 @@ app.controller('CentersController', function($rootScope, $scope, $http, $locatio
 	};
 });
 
-app.controller('CenterController', function($rootScope, $scope, $location, $routeParams, transManager, centersService) {
+app.controller('CenterController', function($rootScope, $scope, $http, $location, $routeParams, config, transManager, centersService) {
+	debugger;
+	var params = getParams(this.constructor);
+	if(!$rootScope.$http) {
+		for(var p in params) {
+			if(!angular.equals(params[p], "$rootScope")) {
+				$rootScope[params[p]] = eval(params[p]);
+			}
+		}
+	}
+	
 	centersService.init($rootScope);
 
 	$scope.newCenter = {};
 	$scope.newCenter = centersService.getCenter($routeParams.code);
 
 	$scope.addCenter = function() {
-		addCenter($scope, centersService, 'U');
+		addCenter($scope, centersService, 'UPDATE');
 	};
 
 	$scope.listCenter = function() {
@@ -96,7 +109,7 @@ app.controller('RegionChildController', function($scope, $http, $location, trans
 	};
 });
 
-function addCenter($scope, centersService, cu) {
+function addCenter($scope, centersService, rowStatus) {
 	var code = $scope.newCenter.code;
 	var name = $scope.newCenter.name;
 	var chief = $scope.newCenter.chief;
@@ -104,7 +117,7 @@ function addCenter($scope, centersService, cu) {
 	var phone = $scope.newCenter.phone;
 	centersService.addCenter(code, name, chief, address, phone);
 
-	if (cu == '') {
+	if (rowStatus == '') {
 		$scope.newCenter.code = '';
 		$scope.newCenter.name = '';
 		$scope.newCenter.chief = '';
@@ -112,3 +125,9 @@ function addCenter($scope, centersService, cu) {
 		$scope.newCenter.phone = '';
 	}
 };
+
+function getParams(func){
+    var str=func.toString();
+    var len = str.indexOf("(");
+    return str.substr(len+1,str.indexOf(")")-len -1).replace(/ /g,"").split(',');
+}
