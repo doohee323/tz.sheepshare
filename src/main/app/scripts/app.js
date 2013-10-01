@@ -1,8 +1,8 @@
 var app = angular.module('serverApp', []);
 
 var config = {
-	// url : 'http://localhost:3000/'
-	url : 'http://192.168.219.112:3000/',
+	url : 'http://localhost:3000',
+	//url : 'http://192.168.219.112:3000/',
 	// url : '/pattern/pt42/masterdetail',
 	server : 'rails' // spring, rails
 };

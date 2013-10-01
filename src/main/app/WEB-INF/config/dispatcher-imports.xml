@@ -91,16 +91,6 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-   	<!-- Transaction -->
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
- 			<tx:method name="retrieve*" read-only="true" />
- 			<tx:method name="get*" read-only="true" />
- 			<tx:method name="print*" read-only="true" />
-			<tx:method name="*" propagation="REQUIRED" timeout="10000" />
-		</tx:attributes>
-	</tx:advice>
-
 	<!-- Transaction AOP -->
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="serviceMethods"

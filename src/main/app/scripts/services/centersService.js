@@ -78,6 +78,7 @@ app.service('centersService', function() {
 			url = '/saveCenterRegion.ajax';
 			type = 'post';
 		} else {
+			// debugger;
 			// 복수건 처리 이슈
 			params = params.uip_center[0];
 			if(params.rowStatus == 'INSERT') {
@@ -114,9 +115,6 @@ app.service('centersService', function() {
 
 					$rootScope.centers[i].rowStatus = 'UPDATE';
 					chkExist = true;
-					var saveCenter = document.getElementById("saveCenter");
-					saveCenter.removeAttribute('disabled');
-					saveCenter.setAttribute('data-ng-disabled', 'false');
 					break;
 				}
 			}
@@ -134,6 +132,9 @@ app.service('centersService', function() {
 			$rootScope.centers[nlength].rowStatus = 'INSERT';
 			$scope.centers = angular.copy($rootScope.centers);
 		}
+		// var saveCenter = document.getElementById("saveCenter");
+		// saveCenter.removeAttribute('disabled');
+		// saveCenter.setAttribute('data-ng-disabled', 'false');
 		$scope.$apply();
 		return $scope;
 	};
