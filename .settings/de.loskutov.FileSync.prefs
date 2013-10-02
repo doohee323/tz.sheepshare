@@ -1,0 +1,7 @@
+WARNING=DO NOT MODIFY THIS FILE IF YOU DON'T UNDERSTAND
+defaultDestination=/Users/mac/git/sheepweb/app
+defaultVariables=
+eclipse.preferences.version=1
+includeTeamPrivateFiles=false
+map|0=src/main/app|,|,|404.html;WEB-INF/;backbonejs/;bower_components/;common/;favicon.ico;index.jsp;index2.html|,
+useCurrentDateForDestinationFiles=false
