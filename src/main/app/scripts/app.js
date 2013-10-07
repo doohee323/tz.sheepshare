@@ -1,30 +1,35 @@
-var app = angular.module('serverApp', []);
+'use strict';
 
 var config = {
-	url : 'http://localhost:3000',
-	//url : 'http://192.168.219.112:3000/',
+//	url : 'http://localhost\\:3000',
+	url: 'http://sheeprails.herokuapp.com',
 	// url : '/pattern/pt42/masterdetail',
-	server : 'rails' // spring, rails
+	server: 'rails' // spring, rails
 };
 
-app.constant('config', config).
-	config(function($routeProvider) {
-	$routeProvider.when('/centers', {
-		controller : 'CentersController',
+angular.module('sheepwebApp', ['ngResource'])
+	.constant('config', config)
+	.config(function($routeProvider, $locationProvider) {
+	$routeProvider
+	.when('/', {
+		redirectTo : '/centers'
+	})
+	.when('/centers', {
+		controller : 'CentersCtrl',
 		templateUrl : './views/centers.html'
-	}).when('/center/:code', {
-		controller : 'CenterController',
-		templateUrl : './views/center.html'
-	}).when('/centerregions/:code', {
-		controller : 'CenterRegionsController',
-		templateUrl : './views/centerRegions.html'
-	}).when('/regions', {
-		controller : 'RegionsController',
-		templateUrl : './views/regions.html'
-	}).otherwise({
+	})
+	.when('/center/:id', {
+		controller : 'CentersCtrl',
+		templateUrl : './views/centers.html'
+	})	
+	.when('/regions/:id', {
+		controller : 'RegionsCtrl',
+		templateUrl : '/views/regions.html'
+	})
+	.otherwise({
 		redirectTo : '/centers'
 	});
-}).config([ '$httpProvider', function($httpProvider) {
-	$httpProvider.defaults.useXDomain = true;
-	delete $httpProvider.defaults.headers.common['X-Requested-With'];
-} ]);
+	
+	$locationProvider.html5Mode(true).hashPrefix('!');
+
+});

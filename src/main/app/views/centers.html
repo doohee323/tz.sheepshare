@@ -1,50 +1,61 @@
-<div class="centers view">
+<div class="centers view" ng-controller="CentersCtrl">
+    <form class="ui form segment">
     <div class="container">
         <header>
             <h3>Centers</h3>
         </header>
         <div class="row">
             <div class="span3">
+                id:
+                <br />
+                <input ng-model="newCenter.id" type="text" ng-disabled="true" placeholder="id">
+            </div>
+            <div class="span3">
                 code:
                 <br />
-                <input data-ng-model="newCenter.code" type="text" placeholder="code">
+                <input ng-model="newCenter.code" type="text" placeholder="code">
             </div>
             <div class="span3">
                 name:
                 <br />
-                <input data-ng-model="newCenter.name" type="text" placeholder="name">
+                <input ng-model="newCenter.name" type="text" placeholder="name">
             </div>
             <div class="span3">
                 chief:
                 <br />
-                <input data-ng-model="newCenter.chief" type="text" placeholder="chief">
+                <input ng-model="newCenter.chief" type="text" placeholder="chief">
             </div>
             <div class="span3">
                 address:
                 <br />
-                <input data-ng-model="newCenter.address" type="text" placeholder="address">
+                <input ng-model="newCenter.address" type="text" placeholder="address">
             </div>
             <div class="span3">
                 phone:
                 <br />
-                <input data-ng-model="newCenter.phone" type="text" placeholder="phone">
+                <input ng-model="newCenter.phone" type="text" placeholder="phone">
             </div>
             <div class="span3">
-            	<input data-ng-model="newCenter.code" type="hidden">
-				<commbutton type="add" data="Center"//>
-				<commbutton type="save" data="Center"//>
+            	<input ng-model="newCenter.code" type="hidden">
+				<commbutton type="add" data="Center"></commbutton>
+				<commbutton type="update" data="Center" dataset="newCenter"></commbutton>
+                <commbutton type="init" data="Center"></commbutton>
             </div>
         </div>
         <br /><br />
         <div>
             <div class="row cardContainer">
-                <div class="span4 card" data-ng-repeat="center in centers | orderBy:'name'">
-                    <button class="btn close cardClose" data-ng-click="deleteCenter(center.code)">&times;</button>
-                    <div class="cardHeader"><a href="#/center/{{center.code}}" class="cardBody btn-link">{{center.name}}</a></div>
+                <div class="span4 card" ng-repeat="center in uip_centers | orderBy:'name'">
+                    <button class="btn close cardClose" ng-click="deleteCenter(center)">&times;</button>
+                    <div class="cardHeader">
+                        <a class="cardBody btn-link" ng-click="goTo('/center/', center)">{{center.name}}</a>
+                    </div>
                     <div class="cardBody">{{center.chief + ' ' + center.phone}}</div>
-                    <a href="#/centerregions/{{center.code}}" class="cardBody btn-link">View {{ center.regions.length }} Regions</a>
+                    <div class="cardBody">{{center.updated_at | agoText }}</div>
+                    <a ng-click="goTo('/regions/', center)" class="cardBody btn-link">View {{ center.regions.length }} Regions</a>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </div>
