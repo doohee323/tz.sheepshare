@@ -1,4 +1,4 @@
-// Generated on 2013-09-25 using generator-angular 0.4.0
+// Generated on 2013-11-19 using generator-angular 0.4.0
 'use strict';
 var LIVERELOAD_PORT = 35729;
 var lrSnippet = require('connect-livereload')({ port: LIVERELOAD_PORT });
@@ -18,7 +18,7 @@ module.exports = function (grunt) {
 
   // configurable paths
   var yeomanConfig = {
-    app: 'app',
+    app: 'src/main/app',
     dist: 'dist'
   };
 
@@ -270,11 +270,12 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,png,txt}',
+            '*.{ico,png,txt,html}',
             '.htaccess',
             'bower_components/**/*',
             'images/{,*/}*.{gif,webp}',
-            'styles/fonts/*'
+            'styles/fonts/*',
+            'WEB-INF/*'
           ]
         }, {
           expand: true,
@@ -387,4 +388,10 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+  
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // Default task.
+  grunt.registerTask('default', [ 'concat', 'uglify']);
 };
