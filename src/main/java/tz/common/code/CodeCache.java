@@ -9,7 +9,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.taskdefs.MacroInstance.Element;
+//import org.apache.tools.ant.taskdefs.MacroInstance.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

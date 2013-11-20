@@ -16,8 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
+//import org.apache.tools.tar.TarEntry;
+//import org.apache.tools.tar.TarInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -200,31 +200,31 @@ public class ZipUtil {
         return targetFile;
     }
 
-    public static void unTar(String inFilename, String outFilePath) throws Exception{
-        try{
-            TarInputStream tin = new TarInputStream(new GZIPInputStream(new FileInputStream(new File(inFilename))));
-            TarEntry tarEntry = tin.getNextEntry();
-            while(tarEntry != null){
-                File destPath = new File(outFilePath + File.separatorChar + tarEntry.getName());
-                if(tarEntry.isDirectory()){
-                    destPath.mkdirs();
-                }else{
-                    String destDir = destPath.toString().substring(0,
-                            destPath.toString().lastIndexOf(File.separatorChar));
-                    if(!new File(destDir).exists()){
-                        new File(destDir).mkdirs();
-                    }
-                    FileOutputStream fout = new FileOutputStream(destPath);
-                    tin.copyEntryContents(fout);
-                    fout.close();
-                }
-                tarEntry = tin.getNextEntry();
-            }
-            tin.close();
-        }catch(Exception e){
-            System.out.println(e.toString());
-        }
-    }
+//    public static void unTar(String inFilename, String outFilePath) throws Exception{
+//        try{
+//            TarInputStream tin = new TarInputStream(new GZIPInputStream(new FileInputStream(new File(inFilename))));
+//            TarEntry tarEntry = tin.getNextEntry();
+//            while(tarEntry != null){
+//                File destPath = new File(outFilePath + File.separatorChar + tarEntry.getName());
+//                if(tarEntry.isDirectory()){
+//                    destPath.mkdirs();
+//                }else{
+//                    String destDir = destPath.toString().substring(0,
+//                            destPath.toString().lastIndexOf(File.separatorChar));
+//                    if(!new File(destDir).exists()){
+//                        new File(destDir).mkdirs();
+//                    }
+//                    FileOutputStream fout = new FileOutputStream(destPath);
+//                    tin.copyEntryContents(fout);
+//                    fout.close();
+//                }
+//                tarEntry = tin.getNextEntry();
+//            }
+//            tin.close();
+//        }catch(Exception e){
+//            System.out.println(e.toString());
+//        }
+//    }
 
     /**
      * <pre>

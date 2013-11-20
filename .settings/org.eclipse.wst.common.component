@@ -4,8 +4,8 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
-        <wb-resource deploy-path="/" source-path="/dist" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <property name="java-output-path" value="/tz.sheepshare_svn/target/classes"/>
-        <property name="context-root" value="sheepshare"/>
+        <property name="context-root" value="tz.sheepshare"/>
     </wb-module>
 </project-modules>
