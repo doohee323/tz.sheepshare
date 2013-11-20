@@ -8,6 +8,7 @@ angular.module('sheepwebApp')
     var center_id = $routeParams.id;
 	RegionService.get({uip_center_id: center_id}, function(data) {
 		$scope.uip_regions = data.uip_regions;
+		$scope.gridOptions = data.uip_regions;
 	 	if(data.uip_regions.length > 0) {
 	 		$scope.newRegion = 	data.uip_regions[0];
 	 	} 
@@ -19,7 +20,8 @@ angular.module('sheepwebApp')
         delete $scope.newRegion.id;
         delete $scope.newRegion.uip_center;
         $scope.newRegion.uip_center_id = center_id;
-    	var params = {uip_region : $scope.newRegion};
+    	var params = {uip_region : $scope.newRegion}; // rails
+    	if(config.server == 'spring') params = $scope.newRegion; // java
     	RegionService.save(params, function (data) {
             data.uip_region.uip_center_id = center_id;
             // delete data.uip_region.id;
@@ -27,25 +29,30 @@ angular.module('sheepwebApp')
             $scope.uip_regions.unshift(data.uip_region);
 	        console.log(data);
     	})
-    }
+    };
 
 	$scope.editRegion = function (region) {
     	$scope.newRegion = region;
-    	$scope.newRegion.uip_center_id = region.uip_center.id;
+    	if(region.uip_center) { // rails
+        	$scope.newRegion.uip_center_id = region.uip_center.id;
+    	} else { // java
+        	$scope.newRegion.uip_center_id = region.uip_center_id;
+    	}
     }
 
     $scope.updateRegion = function (region) {
     	var param = angular.copy($scope.newRegion);
     	delete param.uip_center;
     	var params = {uip_region : param,
-    				 id : $scope.newRegion.id};
+    				 id : $scope.newRegion.id}; // rails
+    	if(config.server == 'spring') params = params.uip_region; // java
     	RegionService.update(params, function (data) {
     		console.log(data);
     		lookupDs(region.id, function (row){
 				$scope.uip_regions[row] = region;
     		});
     	})
-    }
+    };
 
     $scope.deleteRegion = function (region) {
     	RegionService.delete({"id" : region.id}, function (data) {
@@ -55,7 +62,7 @@ angular.module('sheepwebApp')
     		});
     		$scope.newRegion = {};
     	})
-    }
+    };
 
     $scope.initRegion = function () {
     	$scope.newRegion = {};

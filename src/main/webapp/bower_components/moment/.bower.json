@@ -26,5 +26,6 @@
   },
   "_source": "git://github.com/timrwood/moment.git",
   "_target": "~2.3.1",
-  "_originalSource": "moment"
+  "_originalSource": "moment",
+  "_direct": true
 }

@@ -2,6 +2,7 @@
 
 angular.module('sheepwebApp')
 .controller('NavbarCtrl', function ($scope, $location) {
+	
     $scope.goTo = function ( baseUrl, center ) {
     	var path = baseUrl;
     	if(baseUrl == '/') {

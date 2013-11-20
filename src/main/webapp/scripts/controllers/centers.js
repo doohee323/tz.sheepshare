@@ -2,15 +2,16 @@
 
 angular.module('sheepwebApp')
   .controller('CentersCtrl', function ($scope, $location, $routeParams, config, CenterService) {
+	  
 	$scope.$location = $location;
     $scope.newCenter = {};
-
+    var currentid = 0;
+	
 	CenterService.get({}, function(data) {
-		debugger
 	 	$scope.uip_centers = data.uip_centers;
 	    if($location.$$path != '/centers') {
-	    	var id = $routeParams.id;
-			lookupDs(id, function (row){
+	    	currentid = $routeParams.id;
+			lookupDs(currentid, function (row){
 				$scope.newCenter = $scope.uip_centers[row];
 			});
 	    }
@@ -19,31 +20,28 @@ angular.module('sheepwebApp')
     $scope.addCenter = function () {
         $scope.newCenter.id = '';
     	var params = {uip_center : $scope.newCenter};
+    	if(config.server == 'spring') params = $scope.newCenter; // java
     	CenterService.save(params, function (data) {
-            //debugger
-    		$scope.uip_centers.unshift(data.uip_center);
     		console.log(data);
+    		$scope.uip_centers.unshift(data.uip_center);
     	})
-    }
+    };
     $scope.updateCenter = function (center) {
     	var params = {uip_center : $scope.newCenter,
     				 id : $scope.newCenter.id};
+    	if(config.server == 'spring') params = params.uip_center; // java
+    	delete params['key'];delete params['$$hashKey'];delete params['objectKey'];  // remove useless coluems for error fix
     	CenterService.update(params, function (data) {
     		console.log(data);
-    		lookupDs(center.id, function (row){
-				$scope.uip_centers[row] = center;
-    		});
+    		currentid = center.id;
     	})
-    }
+    };
     $scope.deleteCenter = function (center) {
     	CenterService.delete({"id" : center.id}, function (data) {
     		console.log(data);
-    		lookupDs(center.id, function (row){
-    			$scope.uip_centers.splice(row, 1);
-    		});
-    		$scope.newregion = {};
+    		currentid = center.id;
     	})
-    }
+    };
 
     $scope.initCenter = function () {
     	$scope.newCenter = {};
