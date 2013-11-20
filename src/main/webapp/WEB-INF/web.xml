@@ -56,6 +56,14 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	<filter>
+		<filter-name>cors</filter-name>
+		<filter-class>com.tz.filter.CorsFilter</filter-class>
+	</filter>	
+	<filter-mapping>
+		<filter-name>cors</filter-name>
+		<url-pattern>/rest/*</url-pattern>
+	</filter-mapping>
 	<servlet>
 		<servlet-name>tz</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -68,6 +76,21 @@
 		<servlet-name>tz</servlet-name>
 		<url-pattern>*.ajax</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>restful</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/restful-servlet.xml</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>restful</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>jsp</servlet-name>
 		<servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>

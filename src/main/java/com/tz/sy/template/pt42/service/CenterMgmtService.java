@@ -30,10 +30,18 @@ public class CenterMgmtService {
 		return commonDao.queryForList("CenterMgmt.retrieveRegionList", centerCode, Region.class);
 	}
 
-	public void saveCenterRegion(GridData<Center> centerList, GridData<Region> regionList) {
-	    saveCenter(centerList);
+    public void saveCenterRegion(GridData<Center> centerList, GridData<Region> regionList) {
+        saveCenter(centerList);
         saveRegion(regionList);
-	}
+    }
+
+    public void saveCenterOnly(GridData<Center> centerList) {
+        saveCenter(centerList);
+    }
+
+    public void saveRegionOnly(GridData<Region> regionList) {
+        saveRegion(regionList);
+    }
 
 	private void saveCenter(GridData<Center> centerList) {
 		for (int i = 0; i < centerList.size(); ++i) {
