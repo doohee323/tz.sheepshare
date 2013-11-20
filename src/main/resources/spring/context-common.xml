@@ -26,6 +26,7 @@
 				<value>classpath:/properties/environment-database.properties</value>      <!-- DB 설정값(로컬만) -->
 				<value>classpath:/properties/environment-config.properties</value>        <!-- 서버환경별 공통 설정 -->
 				<value>classpath:/properties/environment-sheepshare-config.properties</value>   <!-- sheepshare 환경 공통 설정 -->
+				<value>classpath:/properties/environment-deploy-config.properties</value>   <!-- sheepshare 배포 환경 설정 -->
 			</list>
 		</property>
 		<property name="ignoreResourceNotFound" value="true" />
