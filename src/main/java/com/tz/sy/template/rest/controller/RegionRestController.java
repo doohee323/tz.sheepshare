@@ -1,4 +1,4 @@
-package com.tz.common.controller;
+package com.tz.sy.template.rest.controller;
 
 import java.util.HashMap;
 import java.util.List;

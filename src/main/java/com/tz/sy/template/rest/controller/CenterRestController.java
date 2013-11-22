@@ -1,4 +1,4 @@
-package com.tz.common.controller;
+package com.tz.sy.template.rest.controller;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +23,13 @@ import com.tz.sy.template.pt42.service.CenterMgmtService;
  */
 
 @Controller
+@RequestMapping("/*")
 public class CenterRestController {
 
     @Autowired
     private CenterMgmtService service;
 
-	@RequestMapping("/uip_centers")
+	@RequestMapping("uip_centers")
 	public @ResponseBody
 	Map<String, Object> uipCenters() {
 		Map<String, Object> list = new HashMap<String, Object>();
@@ -37,7 +38,7 @@ public class CenterRestController {
 		return list;
 	}
 
-	@RequestMapping(value = "/uip_centers", method = RequestMethod.POST)
+	@RequestMapping(value = "uip_centers", method = RequestMethod.POST)
 	public @ResponseBody
 	Map<String, Object> save(@RequestBody Center center) {
 		Map<String, Object> list = new HashMap<String, Object>();
@@ -46,7 +47,7 @@ public class CenterRestController {
 		return list;
 	}
 
-	@RequestMapping(value = "/uip_centers/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "uip_centers/{id}", method = RequestMethod.PUT)
 	public @ResponseBody
     Map<String, Object> update(@PathVariable("id") int id,
 			@RequestBody Center center) {
@@ -56,7 +57,7 @@ public class CenterRestController {
 		return list;
 	}
 
-	@RequestMapping(value = "/uip_centers/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "uip_centers/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
 	public void delete(@PathVariable("id") int id) {
 //      service.saveCenterOnly(center);

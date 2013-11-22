@@ -24,6 +24,7 @@
 	    <security:intercept-url pattern="/tz/common/login/login*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- Site 초기화면 : 보안확인없음 -->
 	    <security:intercept-url pattern="/tz/common/message/get*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- 메시지 : 보안확인없음 -->
 	    <security:intercept-url pattern="/pattern/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- pattern : 보안확인없음 -->
+	    <security:intercept-url pattern="/rest/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- pattern : 보안확인없음 -->
 	    <!-- 보안예외사항등록 종료 -->    
         
 	    <security:intercept-url pattern="/common/**/*" access="IS_AUTHENTICATED_ANONYMOUSLY"/><!-- error페이지 : 보안확인없음 -->
