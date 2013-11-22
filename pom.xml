@@ -243,6 +243,15 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
+					<resources>
+						<resource>
+							<directory>src/main/resources</directory>
+							<excludes>
+								<exclude>log4j.xml</exclude>
+							</excludes>
+							<filtering>false</filtering>
+						</resource>
+					</resources>
 					<warSourceDirectory>dist</warSourceDirectory>
 				</configuration>
 			</plugin>
