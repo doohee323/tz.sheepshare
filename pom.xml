@@ -13,6 +13,7 @@
 		<spring.version>3.2.2.RELEASE</spring.version>
 		<spring.security.version>3.1.4.RELEASE</spring.security.version>
 		<aspectj.version>1.6.11</aspectj.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jackson.version>1.9.10</jackson.version>
 	</properties>
 
@@ -233,8 +234,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<source>${jdk.version}</source>
-					<target>${jdk.version}</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 
@@ -243,15 +244,11 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<resources>
+					<webResources>
 						<resource>
-							<directory>src/main/resources</directory>
-							<excludes>
-								<exclude>log4j.xml</exclude>
-							</excludes>
-							<filtering>false</filtering>
+							<directory>src\main\webapp</directory>
 						</resource>
-					</resources>
+					</webResources>
 					<warSourceDirectory>dist</warSourceDirectory>
 				</configuration>
 			</plugin>
