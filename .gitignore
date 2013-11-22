@@ -1,2 +1,6 @@
 /target
 /.DS_Store
+/dist
+/node_modules
+/.sass-cache
+/.tmp
