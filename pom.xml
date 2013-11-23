@@ -238,62 +238,62 @@
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.7</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<configuration>
-							<tasks>
-								<exec dir="${basedir}" executable="rm" failonerror="true">
-									<arg line="-Rf dist/WEB-INF/classes" />
-								</exec>
-								<exec dir="${basedir}" executable="cp" failonerror="true">
-									<arg
-										line="-Rf target/${project.artifactId}/WEB-INF/classes dist/WEB-INF/classes" />
-								</exec>
-								<exec dir="${basedir}" executable="cp" failonerror="true">
-									<arg line="-Rf target/${project.artifactId}/WEB-INF/lib dist/WEB-INF/lib" />
-								</exec>
-								<exec dir="${basedir}" executable="cp" failonerror="true">
-									<arg line="-Rf ${basedir}/src/main/webapp/WEB-INF/config dist/WEB-INF/config" />
-								</exec>
-							</tasks>
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 				<version>1.7</version> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>generate-sources</phase> -->
+<!-- 						<configuration> -->
+<!-- 							<tasks> -->
+<!-- 								<exec dir="${basedir}" executable="rm" failonerror="true"> -->
+<!-- 									<arg line="-Rf dist/WEB-INF/classes" /> -->
+<!-- 								</exec> -->
+<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
+<!-- 									<arg -->
+<!-- 										line="-Rf target/${project.artifactId}/WEB-INF/classes dist/WEB-INF/classes" /> -->
+<!-- 								</exec> -->
+<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
+<!-- 									<arg line="-Rf target/${project.artifactId}/WEB-INF/lib dist/WEB-INF/lib" /> -->
+<!-- 								</exec> -->
+<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
+<!-- 									<arg line="-Rf ${basedir}/src/main/webapp/WEB-INF/config dist/WEB-INF/config" /> -->
+<!-- 								</exec> -->
+<!-- 							</tasks> -->
 
-							<target
-								name="copy xml ${basedir}/src/main/java to ${basedir}/dist/WEB-INF/classes">
-								<copy todir="${basedir}/dist/WEB-INF/classes">
-									<fileset dir="${basedir}/src/main/java">
-										<include name="**/*.xml" />
-									</fileset>
-								</copy>
-							</target>
+<!-- 							<target -->
+<!-- 								name="copy xml ${basedir}/src/main/java to ${basedir}/dist/WEB-INF/classes"> -->
+<!-- 								<copy todir="${basedir}/dist/WEB-INF/classes"> -->
+<!-- 									<fileset dir="${basedir}/src/main/java"> -->
+<!-- 										<include name="**/*.xml" /> -->
+<!-- 									</fileset> -->
+<!-- 								</copy> -->
+<!-- 							</target> -->
 
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<warSourceDirectory>dist</warSourceDirectory>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.9</version>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
-					<wtpversion>2.5</wtpversion>
-				</configuration>
-			</plugin>
+<!-- 						</configuration> -->
+<!-- 						<goals> -->
+<!-- 							<goal>run</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-war-plugin</artifactId> -->
+<!-- 				<version>2.4</version> -->
+<!-- 				<configuration> -->
+<!-- 					<warSourceDirectory>dist</warSourceDirectory> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-eclipse-plugin</artifactId> -->
+<!-- 				<version>2.9</version> -->
+<!-- 				<configuration> -->
+<!-- 					<downloadSources>true</downloadSources> -->
+<!-- 					<downloadJavadocs>true</downloadJavadocs> -->
+<!-- 					<wtpversion>2.5</wtpversion> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
 
