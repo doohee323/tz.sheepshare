@@ -257,7 +257,7 @@
 <!-- 									<arg line="-Rf target/${project.artifactId}/WEB-INF/lib dist/WEB-INF/lib" /> -->
 <!-- 								</exec> -->
 <!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
-<!-- 									<arg line="-Rf ${basedir}/src/main/webapp/WEB-INF/config dist/WEB-INF/config" /> -->
+<!-- 									<arg line="-Rf ${basedir}/src/main/webapp/WEB-INF/config dist/WEB-INF" /> -->
 <!-- 								</exec> -->
 <!-- 							</tasks> -->
 
