@@ -227,73 +227,65 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<!-- context path -->
+		<finalName>tz.sheepshare</finalName>
+
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.0</version>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>false</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<artifactId>maven-antrun-plugin</artifactId> -->
-<!-- 				<version>1.7</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<phase>generate-sources</phase> -->
-<!-- 						<configuration> -->
-<!-- 							<tasks> -->
-<!-- 								<exec dir="${basedir}" executable="rm" failonerror="true"> -->
-<!-- 									<arg line="-Rf dist/WEB-INF/classes" /> -->
-<!-- 								</exec> -->
-<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
-<!-- 									<arg -->
-<!-- 										line="-Rf target/${project.artifactId}/WEB-INF/classes dist/WEB-INF/classes" /> -->
-<!-- 								</exec> -->
-<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
-<!-- 									<arg line="-Rf target/${project.artifactId}/WEB-INF/lib dist/WEB-INF/lib" /> -->
-<!-- 								</exec> -->
-<!-- 								<exec dir="${basedir}" executable="cp" failonerror="true"> -->
-<!-- 									<arg line="-Rf ${basedir}/src/main/webapp/WEB-INF/config dist/WEB-INF" /> -->
-<!-- 								</exec> -->
-<!-- 							</tasks> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
 
-<!-- 							<target -->
-<!-- 								name="copy xml ${basedir}/src/main/java to ${basedir}/dist/WEB-INF/classes"> -->
-<!-- 								<copy todir="${basedir}/dist/WEB-INF/classes"> -->
-<!-- 									<fileset dir="${basedir}/src/main/java"> -->
-<!-- 										<include name="**/*.xml" /> -->
-<!-- 									</fileset> -->
-<!-- 								</copy> -->
-<!-- 							</target> -->
+			<!-- ㅇ maven goal : -e clean tomcat:run -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>tomcat-maven-plugin</artifactId>
+				<version>1.1</version>
+				<configuration>
+					<path>/</path>
+					<port>8080</port>
+				</configuration>
+			</plugin>
 
-<!-- 						</configuration> -->
-<!-- 						<goals> -->
-<!-- 							<goal>run</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-war-plugin</artifactId> -->
-<!-- 				<version>2.4</version> -->
-<!-- 				<configuration> -->
-<!-- 					<warSourceDirectory>dist</warSourceDirectory> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-<!-- 			<plugin> -->
-<!-- 				<artifactId>maven-eclipse-plugin</artifactId> -->
-<!-- 				<version>2.9</version> -->
-<!-- 				<configuration> -->
-<!-- 					<downloadSources>true</downloadSources> -->
-<!-- 					<downloadJavadocs>true</downloadJavadocs> -->
-<!-- 					<wtpversion>2.5</wtpversion> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
+			<!-- ㅇ maven goal : -e clean jetty:run -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<configuration>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<contextPath>/</contextPath>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>8080</port>
+						</connector>
+					</connectors>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
